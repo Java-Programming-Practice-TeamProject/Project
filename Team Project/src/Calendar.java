@@ -45,7 +45,9 @@ public class Calendar {
      * @exception NoTimeEnteredException
      *      시간이 입력되지 않았을 때
      * @exception TimeAlreadyFullException
-     *      이미 그 시간에 일정이 존재할 때 
+     *      이미 그 시간에 일정이 존재할 때
+     * @exception StartTimeAfterEndTimeException
+     *      시작 시간이 끝나는 시간보다 늦을 때
      */
     public void add() {}
 
@@ -61,7 +63,9 @@ public class Calendar {
      * change details of schedule
      * @param   all variables in class Schedule
      * @exception TimeAlreadyFullException
-     *      이미 그 시간에 일정이 존재할 때 
+     *      이미 그 시간에 일정이 존재할 때
+     * @exception StartTimeAfterEndTimeException
+     *      시작 시간이 끝나는 시간보다 늦을 때
      */
     public void modify() {}
 }
