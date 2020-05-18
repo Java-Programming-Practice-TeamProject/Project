@@ -1,8 +1,7 @@
 public class Schedule {
     private String name;
-    private int[] time = new int[5];    //year, month, date, start_time, end_time
+    private int[] time = new int[7];    //year, month, date, start_hour, start_min, end_hour, end_min
     private boolean isImportant;        //true means important, and false means not important
-    private int repeat;
     private String place;
     private String memo;
 
@@ -12,27 +11,24 @@ public class Schedule {
     public Schedule() {
         name = "";
         isImportant = false;
-        repeat = 0;
         place = "";
         memo = "";
     }
 
     /**
      * Another constructor of class Schedule
-     * @param name  name of Schedule
-     * @param time  time of Schedule
-     * @param isImportant   is important or not
-     * @param repeat    repeat
-     * @param place     place of schedule
-     * @param memo      memo about schedule
+     * @param n     name of Schedule
+     * @param t     time of Schedule
+     * @param isImp is important or not
+     * @param p     place of schedule
+     * @param m     memo about schedule
      */
-    public Schedule(String name, int[] time, boolean isImportant, int repeat, String place, String memo) {
-        this.name = name;
-        System.arraycopy(time, 0, this.time, 0, 5);
-        this.isImportant = isImportant;
-        this.repeat = repeat;
-        this.place = place;
-        this.memo = memo;
+    public Schedule(String n, int[] t, boolean isIm, String p, String m) {
+        name = n;
+        System.arraycopy(t, 0, time, 0, 7);
+        isImportant = isIm;
+        place = p;
+        memo = m;
     }
 
     /**
@@ -52,13 +48,52 @@ public class Schedule {
     }
 
     /**
-     * change value of each variable if it is not null
-     * @param name  name of Schedule
-     * @param time  time of Schedule
-     * @param isImportant   is important or not
-     * @param repeat    repeat
-     * @param place     place of schedule
-     * @param memo      memo about schedule
+     * getter of isImportant
+     * @return isImportant of calendar
      */
-    public void modify(String name, int[] time, boolean isImportant, int repeat, String place, String memo) {}
+    public boolean getIsImportant() {
+        return isImportant;
+    }
+
+    /**
+     * getter of place
+     * @return place of calendar
+     */
+    public String getPlace() {
+        return place;
+    }
+
+    /**
+     * getter of memo
+     * @return memo of calendar
+     */
+    public String getMemo() {
+        return memo;
+    }
+
+    /**
+     * change value of each variable if it is not null
+     * @param n     name of Schedule
+     * @param t     time of Schedule
+     * @param isImp is important or not
+     * @param p     place of schedule
+     * @param m     memo about schedule
+     */
+    public void modify(String n, int[] t, boolean isImp, String p, String m) {
+        if (n != null) {
+            name = n;
+        }
+        if (t[0] != 0) {
+            System.arraycopy(t, 0, time, 0, 7);
+        }
+        if (isImp != isImportant) {
+            isImp = isImportant;
+        }
+        if (p != null) {
+            place = p;
+        }
+        if (m != null) {
+            memo = m;
+        }
+    }
 }
