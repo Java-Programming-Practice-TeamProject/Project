@@ -32,7 +32,7 @@ public class Scheduler {
      * @param name  name of calendar to delete
      * @exception NoNameEnteredException
      *      이름이 입력되지 않았을 때
-     * @exception NotCalendarNameException
+     * @exception NoNameMatchException
      *      입력된 이름을 가진 calendar가 없을 때
      * @exception EmptyCalendarException
      *      calendar가 비어 있을 때
@@ -55,14 +55,14 @@ public class Scheduler {
             }
         }
 
-        throw new NotCalendarNameException();
+        throw new NoNameMatchException();
     }
 
     /**
      * change name of calendar
      * @param old_name  old name of calendar
      * @param new_name  new name of calendar
-     * @exception NotCalendarNameWithOldNameException
+     * @exception NoNameMatchException
      *      old_name을 가진 calendar가 없을 때
      * @exception AlreadyDefinedWithNewNameException
      *      new_name과 같은 이름의 calendar가가 존재할 때
@@ -93,7 +93,7 @@ public class Scheduler {
             }
         }
 
-        throw new NotCalendarNameException();
+        throw new NoNameMatchException();
     }
 }
 
@@ -115,11 +115,11 @@ class NoNameEnteredException extends RuntimeException {
     }
 }
 
-class NotCalendarNameException extends RuntimeException {
-    NotCalendarNameException() {
+class NoNameMatchException extends RuntimeException {
+    NoNameMatchException() {
         super();
     }
-    NotCalendarNameException(String message) {
+    NoNameMatchException(String message) {
         super(message);
     }
 }

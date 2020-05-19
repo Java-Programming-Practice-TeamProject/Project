@@ -49,15 +49,17 @@ public class Calendar {
      * @exception StartTimeAfterEndTimeException
      *      시작 시간이 끝나는 시간보다 늦을 때
      */
-    public void add() {}
+    public void add_schedule() {}
 
     /**
      * delete schedule
-     * @param name  name of calendar to delete
+     * @param name  name of schedule to delete
      * @exception NoNameEnteredException
      *      이름이 입력되지 않았을 때
+     * @exception NoNameMatchException
+     *      입력된 이름을 가진 schedule이 없을 때
      */
-    public void remove(String name) {}
+    public void remove_schedule(String name) {}
 
     /**
      * change details of schedule
@@ -66,6 +68,8 @@ public class Calendar {
      *      이미 그 시간에 일정이 존재할 때
      * @exception StartTimeAfterEndTimeException
      *      시작 시간이 끝나는 시간보다 늦을 때
+     * @exception NoNameMatchException
+     *      입력된 이름을 가진 schedule이 없을 때
      */
-    public void modify() {}
+    public void modify_schedule() {}
 }
