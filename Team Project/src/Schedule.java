@@ -79,7 +79,7 @@ public class Schedule {
      * @param p     place of schedule
      * @param m     memo about schedule
      */
-    public void modify(String n, int[] t, boolean isImp, String p, String m) {
+    public void modify_chedule(String n, int[] t, boolean isImp, String p, String m) {
         if (n != null) {
             name = n;
         }
