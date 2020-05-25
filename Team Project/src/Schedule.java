@@ -1,6 +1,6 @@
 public class Schedule {
     private String name;
-    private int[] time = new int[7];    //year, month, date, start_hour, start_min, end_hour, end_min
+    private int[] time;    //year, month, date, start_hour, start_min, end_hour, end_min
     private boolean isImportant;        //true means important, and false means not important
     private String place;
     private String memo;
@@ -10,6 +10,7 @@ public class Schedule {
      */
     public Schedule() {
         name = "";
+        time = new int[7];
         isImportant = false;
         place = "";
         memo = "";
@@ -25,6 +26,7 @@ public class Schedule {
      */
     public Schedule(String n, int[] t, boolean isIm, String p, String m) {
         name = n;
+        time = new int[7];
         System.arraycopy(t, 0, time, 0, 7);
         isImportant = isIm;
         place = p;
@@ -79,7 +81,7 @@ public class Schedule {
      * @param p     place of schedule
      * @param m     memo about schedule
      */
-    public void modify_chedule(String n, int[] t, boolean isImp, String p, String m) {
+    public void modify_schedule(String n, int[] t, boolean isImp, String p, String m) {
         if (n != null) {
             name = n;
         }
