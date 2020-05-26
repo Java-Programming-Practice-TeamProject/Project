@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.time.LocalDateTime;
 
 public class Calendar {
     private ArrayList<Schedule> schedules;
@@ -40,6 +41,7 @@ public class Calendar {
 
     /**
      * add new schedule
+	 * time[year, month, date, hour, minute]
      * @param   all variables in class Schedule
      * @exception AlreadyDefinedException
      *      이미 같은 이름의 일정이 존재할 때
@@ -52,16 +54,27 @@ public class Calendar {
      * @exception StartTimeAfterEndTimeException
      *      시작 시간이 끝나는 시간보다 늦을 때
      */
-    public void add_schedule(String name, int time[], boolean isImportant, String place, String memo) {
-    	if(name == null) {
+    public void add_schedule(String name, int[] start, int[] end, boolean isImp, boolean overlap, String place, String memo, boolean isAllDay) {
+		LocalDateTime start_time, end_time;
+		
+		if(name == null) {
     		throw new NoNameEnteredException();
     	}
     	
-    	if(time == null) {
+    	if(start == null || end == null) {
     		throw new NoTimeEnteredException();
-    	}
+		}
+		
+		if (isAllDay) {
+			start_time = LocalDateTime.of(start[0], start[1], start[2], 0, 0, 0, 0);
+			end_time = LocalDateTime.of(end[0], end[1], end[2], 23, 59, 59, 999999999);
+		} 
+		else {
+			start_time = LocalDateTime.of(start[0], start[1], start[2], start[3], start[4], 0, 0);
+			end_time = LocalDateTime.of(end[0], end[1], end[2], end[3], end[4], 59, 999999999);
+		}
 
-    	if((time[3]>time[5])||(time[3]==time[5])&&(time[4]>time[6])) {
+    	if(start_time.isAfter(end_time)) {
     		throw new StartTimeAfterEndTimeException();
     	}
     	
@@ -69,31 +82,24 @@ public class Calendar {
     		if(name.equals(s.getName())) {
     			throw new AlreadyDefinedException();
     		}
-    		if(time[0] == s.getTime()[0] && time[1] == s.getTime()[1] && time[2] == s.getTime()[2]) {
-    			/* when start time is same */
-    			if(time[3] == s.getTime()[3] && time[4] == s.getTime()[4])
-    				throw new TimeAlreadyFullException();
-    			/* when end time is same */
-    			if(time[5] == s.getTime()[5] && time[6] == s.getTime()[6])
-    				throw new TimeAlreadyFullException();
-    			
-    			Schedule faster,slower;
-    			if(time[3]>s.getTime()[3]||(time[3]==s.getTime()[3]&&time[4]>s.getTime()[4])) {
-    				faster = s;
-    				slower = this;
-    			}
-    			else {
-    				faster = this;
-    				slower = s;
-    			}
-    			if(faster.getTime()[5]>slower.getTime()[3]||
-    					((faster.getTime()[5]==slower.getTime()[3])&&(faster.getTime()[6]>slower.getTime()[4]))){
-    				throw new TimeAlreadyFullException();
-    			}
-    		}
+			
+			if(start_time.equals(s.getStartTime()) || end_time.equals(s.getEndTime())) {
+				throw new TimeAlreadyFullException();
+			}
+
+			if(s.getStartTime().isAfter(start_time)) {
+				if(end_time.isAfter(s.getStartTime())) {
+					throw new TimeAlreadyFullException();
+				}
+			}
+			else {
+				if(s.getEndTime().isAfter(start_time)) {
+					throw new TimeAlreadyFullException();
+				}
+			}
     	}
     	
-    	Schedule s = new Schedule(name, time, isImportant, place, memo);
+    	Schedule s = new Schedule(name, start_time, end_time, isImp, overlap, place, memo);
     	schedules.add(s);
     }
 
@@ -136,9 +142,24 @@ public class Calendar {
      * @exception NoNameMatchException
      *      입력된 이름을 가진 schedule이 없을 때
      */
-    public void modify_schedule(String name, String new_name,int time[], boolean isImportant, String place, String memo) {
-    	if(name == null || new_name == null) {
+    public void modify_schedule(String name, String new_name, int[] start, int[] end, boolean isImp, boolean overlap, String place, String memo, boolean isAllDay) {
+		LocalDateTime start_time, end_time;
+		
+		if(name == null || new_name == null) {
     		throw new NoNameEnteredException();
+		}
+		
+		if (isAllDay) {
+			start_time = LocalDateTime.of(start[0], start[1], start[2], 0, 0, 0, 0);
+			end_time = LocalDateTime.of(end[0], end[1], end[2], 23, 59, 59, 999999999);
+		} 
+		else {
+			start_time = LocalDateTime.of(start[0], start[1], start[2], start[3], start[4], 0, 0);
+			end_time = LocalDateTime.of(end[0], end[1], end[2], end[3], end[4], 59, 999999999);
+		}
+
+    	if(start_time.isAfter(end_time)) {
+    		throw new StartTimeAfterEndTimeException();
     	}
     	
     	Schedule sch;
@@ -150,43 +171,29 @@ public class Calendar {
     		}
     		if(new_name.equals(s.getName())) {
     			throw new AlreadyDefinedException();
-    		}
-    		if(time[0] == s.getTime()[0] && time[1] == s.getTime()[1] && time[2] == s.getTime()[2]) {
-    			/* when start time is same */
-    			if(time[3] == s.getTime()[3] && time[4] == s.getTime()[4])
-    				throw new TimeAlreadyFullException();
-    			/* when end time is same */
-    			if(time[5] == s.getTime()[5] && time[6] == s.getTime()[6])
-    				throw new TimeAlreadyFullException();
-    			
-    			Schedule faster,slower;
-    			if(time[3]>s.getTime()[3]||(time[3]==s.getTime()[3]&&time[4]>s.getTime()[4])) {
-    				faster = s;
-    				slower = this;
-    			}
-    			else {
-    				faster = this;
-    				slower = s;
-    			}
-    			if(faster.getTime()[5]>slower.getTime()[3]||
-    					((faster.getTime()[5]==slower.getTime()[3])&&(faster.getTime()[6]>slower.getTime()[4]))){
-    				throw new TimeAlreadyFullException();
-    			}
-    		}
-    	}
-    	
-    	if(flag==false) {
-    		throw new NoNameMatchException();
-    	}
-    	
-    	if(time!=null) {
-    		if((time[3]>time[5])||(time[3]==time[5])&&(time[4]>time[6])) {
-        		throw new StartTimeAfterEndTimeException();
-        	}
-    	}
-    	
-    	sch.modify_schedule(new_name, time, isImportant, place, memo);
+			}
+			
+    		if(start_time.equals(s.getStartTime()) || end_time.equals(s.getEndTime())) {
+				throw new TimeAlreadyFullException();
+			}
 
+			if(s.getStartTime().isAfter(start_time)) {
+				if(end_time.isAfter(s.getStartTime())) {
+					throw new TimeAlreadyFullException();
+				}
+			}
+			else {
+				if(s.getEndTime().isAfter(start_time)) {
+					throw new TimeAlreadyFullException();
+				}
+			}
+    	}
+    	
+    	if(flag == false) {
+    		throw new NoNameMatchException();
+		}
+    	
+    	sch.modify_schedule(new_name, start_time, end_time, isImp, overlap, place, memo);
     }
 }
 

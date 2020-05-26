@@ -1,34 +1,44 @@
+import java.time.LocalDateTime;
+
 public class Schedule {
     private String name;
-    private int[] time;    //year, month, date, start_hour, start_min, end_hour, end_min
-    private boolean isImportant;        //true means important, and false means not important
+    private LocalDateTime start_time;
+    private LocalDateTime end_time;
+    private boolean isImportant;
+    private boolean canBeOverlapped;    
     private String place;
     private String memo;
 
     /**
      * default constructor of class Schedule
+     * start_time, end_time -> current time
      */
     public Schedule() {
         name = "";
-        time = new int[7];
+        start_time = LocalDateTime.now();
+        end_time = start_time;
         isImportant = false;
+        canBeOverlapped = false;
         place = "";
         memo = "";
     }
 
     /**
      * Another constructor of class Schedule
-     * @param n     name of Schedule
-     * @param t     time of Schedule
-     * @param isImp is important or not
-     * @param p     place of schedule
-     * @param m     memo about schedule
+     * @param n         name of Schedule
+     * @param start     start time of Schedule
+     * @param end       end time of Schedule
+     * @param isImp     is important or not
+     * @param overlap   can be overlapped or not
+     * @param p         place of schedule
+     * @param m         memo about schedule
      */
-    public Schedule(String n, int[] t, boolean isIm, String p, String m) {
+    public Schedule(String n, LocalDateTime start, LocalDateTime end, boolean isImp, boolean overlap, String p, String m) {
         name = n;
-        time = new int[7];
-        System.arraycopy(t, 0, time, 0, 7);
-        isImportant = isIm;
+        start_time = start;
+        end_time = end;
+        isImportant = isImp;
+        canBeOverlapped = overlap;
         place = p;
         memo = m;
     }
@@ -42,11 +52,19 @@ public class Schedule {
     }
 
     /**
-     * getter of time
-     * @return time of calendar
+     * getter of start_time
+     * @return start_time of calendar
      */
-    public int[] getTime() {
-        return time;
+    public LocalDateTime getStartTime() {
+        return start_time;
+    }
+
+    /**
+     * getter of end_time
+     * @return end_time of calendar
+     */
+    public LocalDateTime getEndTime() {
+        return end_time;
     }
 
     /**
@@ -55,6 +73,14 @@ public class Schedule {
      */
     public boolean getIsImportant() {
         return isImportant;
+    }
+
+    /**
+     * getter of canBeOverlapped
+     * @return canBeOverlapped of calendar
+     */
+    public boolean getCanBeOverlapped() {
+        return canBeOverlapped;
     }
 
     /**
@@ -78,22 +104,34 @@ public class Schedule {
      * @param n     name of Schedule
      * @param t     time of Schedule
      * @param isImp is important or not
+     * @param overlap   can be overlapped or not
      * @param p     place of schedule
      * @param m     memo about schedule
      */
-    public void modify_schedule(String n, int[] t, boolean isImp, String p, String m) {
+    public void modify_schedule(String n, LocalDateTime start, LocalDateTime end, boolean isImp, boolean overlap, String p, String m) {
         if (n != null) {
             name = n;
         }
-        if (t[0] != 0) {
-            System.arraycopy(t, 0, time, 0, 7);
+
+        if (!start_time.equals(start)) {
+            start_time = start;
         }
+        if (!end_time.equals(end)) {
+            end_time = end;
+        }
+
         if (isImp != isImportant) {
             isImp = isImportant;
         }
+
+        if (canBeOverlapped != overlap) {
+            canBeOverlapped = overlap;          //불가능으로 바꿨을때 이미 겹쳐있는 일정은?
+        }
+
         if (p != null) {
             place = p;
         }
+
         if (m != null) {
             memo = m;
         }
