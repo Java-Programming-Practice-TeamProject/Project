@@ -42,24 +42,7 @@ public class FullDaySchedule extends Schedule{
      * @param t         time of Schedule
      */
     public void modify_schedule(String n, boolean isImp, String m, int repeat, LocalDate t) {
-        if (n != name) {
-            name = n;
-        }
-
-        if (!time.equals(t)) {
-            time = t;
-        }
-
-        if (isImp != isImportant) {
-            isImp = isImportant;
-        }
-
-        if (m != memo) {
-            memo = m;
-        }
-
-        if (repeat != repeatType) {
-            repeatType = repeat;
-        }
+        super.modify_schedule(n, isImp, m, repeat);
+        time = t;
     }
 }

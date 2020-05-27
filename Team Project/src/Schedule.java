@@ -65,4 +65,18 @@ public class Schedule {
     public int getRepeatType() {
         return repeatType;
     }
+
+    /**
+     * change value of each variable if it is not null
+     * @param n         name of schedule
+     * @param isImp     is important or not
+     * @param m         memo about schedule
+     * @param repeat    repeat type
+     */
+    public void modify_schedule(String n, boolean isImp, String m, int repeat) {
+        name = n;
+        isImportant = isImp;
+        memo = m;
+        repeatType = repeat;
+    }
 }

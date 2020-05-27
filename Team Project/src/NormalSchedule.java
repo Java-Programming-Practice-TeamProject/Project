@@ -67,31 +67,9 @@ public class NormalSchedule extends Schedule {
      * @param end       end time of Schedule
      */
     public void modify_schedule(String n, boolean isImp, boolean overlap, String m, int repeat, LocalDateTime start, LocalDateTime end) {
-        if (n != name) {
-            name = n;
-        }
-
-        if (!start_time.equals(start)) {
-            start_time = start;
-        }
-        if (!end_time.equals(end)) {
-            end_time = end;
-        }
-
-        if (isImp != isImportant) {
-            isImp = isImportant;
-        }
-
-        if (canBeOverlapped != overlap) {
-            canBeOverlapped = overlap; 
-        }
-
-        if (m != memo) {
-            memo = m;
-        }
-
-        if (repeat != repeatType) {
-            repeatType = repeat;
-        }
+        super.modify_schedule(n, isImp, m, repeat);
+        canBeOverlapped = overlap; 
+        start_time = start;
+        end_time = end;
     }
 }
