@@ -1,46 +1,37 @@
-import java.time.LocalDateTime;
-
 public class Schedule {
-    private String name;
-    private LocalDateTime start_time;
-    private LocalDateTime end_time;
-    private boolean isImportant;
-    private boolean canBeOverlapped;    
-    private String place;
-    private String memo;
+    protected String name;
+    protected boolean isImportant;
+    protected String memo;
+    /** 
+     * 0. 반복X
+     * 1. 매년 X월 Y일
+     * 2. 매월 X일
+     * 3. 매주 X요일
+    */
+    protected int repeatType;             
 
     /**
      * default constructor of class Schedule
-     * start_time, end_time -> current time
      */
     public Schedule() {
         name = "";
-        start_time = LocalDateTime.now();
-        end_time = start_time;
         isImportant = false;
-        canBeOverlapped = false;
-        place = "";
         memo = "";
+        repeatType = 0;
     }
 
     /**
      * Another constructor of class Schedule
-     * @param n         name of Schedule
-     * @param start     start time of Schedule
-     * @param end       end time of Schedule
+     * @param n         name of schedule
      * @param isImp     is important or not
-     * @param overlap   can be overlapped or not
-     * @param p         place of schedule
      * @param m         memo about schedule
+     * @param repeat    repeat type
      */
-    public Schedule(String n, LocalDateTime start, LocalDateTime end, boolean isImp, boolean overlap, String p, String m) {
+    public Schedule(String n, boolean isImp, String m, int repeat) {
         name = n;
-        start_time = start;
-        end_time = end;
         isImportant = isImp;
-        canBeOverlapped = overlap;
-        place = p;
         memo = m;
+        repeatType = repeat;
     }
 
     /**
@@ -52,43 +43,11 @@ public class Schedule {
     }
 
     /**
-     * getter of start_time
-     * @return start_time of calendar
-     */
-    public LocalDateTime getStartTime() {
-        return start_time;
-    }
-
-    /**
-     * getter of end_time
-     * @return end_time of calendar
-     */
-    public LocalDateTime getEndTime() {
-        return end_time;
-    }
-
-    /**
      * getter of isImportant
      * @return isImportant of calendar
      */
     public boolean getIsImportant() {
         return isImportant;
-    }
-
-    /**
-     * getter of canBeOverlapped
-     * @return canBeOverlapped of calendar
-     */
-    public boolean getCanBeOverlapped() {
-        return canBeOverlapped;
-    }
-
-    /**
-     * getter of place
-     * @return place of calendar
-     */
-    public String getPlace() {
-        return place;
     }
 
     /**
@@ -100,40 +59,10 @@ public class Schedule {
     }
 
     /**
-     * change value of each variable if it is not null
-     * @param n     name of Schedule
-     * @param t     time of Schedule
-     * @param isImp is important or not
-     * @param overlap   can be overlapped or not
-     * @param p     place of schedule
-     * @param m     memo about schedule
+     * getter of repeatType
+     * @return repeatType of calendar
      */
-    public void modify_schedule(String n, LocalDateTime start, LocalDateTime end, boolean isImp, boolean overlap, String p, String m) {
-        if (n != null) {
-            name = n;
-        }
-
-        if (!start_time.equals(start)) {
-            start_time = start;
-        }
-        if (!end_time.equals(end)) {
-            end_time = end;
-        }
-
-        if (isImp != isImportant) {
-            isImp = isImportant;
-        }
-
-        if (canBeOverlapped != overlap) {
-            canBeOverlapped = overlap;          //불가능으로 바꿨을때 이미 겹쳐있는 일정은?
-        }
-
-        if (p != null) {
-            place = p;
-        }
-
-        if (m != null) {
-            memo = m;
-        }
+    public int getRepeatType() {
+        return repeatType;
     }
 }

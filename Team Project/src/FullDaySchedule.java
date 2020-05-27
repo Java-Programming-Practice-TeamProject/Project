@@ -1,0 +1,65 @@
+import java.time.LocalDate;
+
+public class FullDaySchedule extends Schedule{
+    private LocalDate time;
+    
+    /**
+     * default constructor of class FullDaySchedule
+     */
+    public FullDaySchedule() {
+        super();
+        time = LocalDate.now();
+    }
+
+    /**
+     * Another constructor of class FullDaySchedule
+     * @param n         name of schedule
+     * @param isImp     is important or not
+     * @param overlap   can be overlapped or not
+     * @param m         memo about schedule
+     * @param repeat    repeat type
+     * @param t         time of schedule
+     */
+    public FullDaySchedule(String n, boolean isImp, String m, int repeat, LocalDate t) {
+        super(n, isImp, m, repeat);
+        time = t;
+    }
+
+    /**
+     * getter of time
+     * @return time of calendar
+     */
+    public LocalDate getTime() {
+        return time;
+    }
+
+    /**
+     * change value of each variable if it is not null
+     * @param n         name of schedule
+     * @param isImp     is important or not
+     * @param m         memo about schedule
+     * @param repeat    repeat type
+     * @param t         time of Schedule
+     */
+    public void modify_schedule(String n, boolean isImp, String m, int repeat, LocalDate t) {
+        if (n != name) {
+            name = n;
+        }
+
+        if (!time.equals(t)) {
+            time = t;
+        }
+
+        if (isImp != isImportant) {
+            isImp = isImportant;
+        }
+
+        if (m != memo) {
+            memo = m;
+        }
+
+        if (repeat != repeatType) {
+            repeatType = repeat;
+        }
+    }
+}
