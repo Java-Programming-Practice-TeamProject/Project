@@ -6,6 +6,34 @@ public class Scheduler {
 
     public Scheduler() {
         calendars = new ArrayList<>();
+        calendars.add(new Calendar("default"));
+    }
+    
+    /**
+     * get names of calendar
+     * @return name	names of calendar
+     */
+    public String[] get_name() {
+    	ArrayList<String> name = new ArrayList<>();
+    	for (Calendar c : calendars) {
+    		name.add(c.getName());
+    	}
+    	return name.toArray(new String[name.size()]);
+    }
+    
+    /**
+     * get calendar
+     * @param name  name of calendar to get
+     * @exception NoNameMatchException          입력된 이름을 가진 calendar가 없을 때
+     */
+    public Calendar get_calendar(String name) {
+    	for (Calendar c : calendars) {
+    		if (name.equals(c.getName())) {
+    			return c;
+    		}
+    	}
+    	
+    	throw new NoNameMatchException();
     }
 
     /**
