@@ -18,7 +18,6 @@ public class Calendar {
 
 	/**
 	 * Another constructor for class Calendar
-	 * 
 	 * @param name name of calendar
 	 */
 	public Calendar(String name) {
@@ -28,7 +27,6 @@ public class Calendar {
 
 	/**
 	 * getter of name
-	 * 
 	 * @return name of calendar
 	 */
 	public String getName() {
@@ -37,7 +35,6 @@ public class Calendar {
 
 	/**
 	 * setter of name
-	 * 
 	 * @param name new name of calendar
 	 */
 	public void setName(String name) {
@@ -133,7 +130,6 @@ public class Calendar {
 
 	/**
 	 * delete schedule
-	 * 
 	 * @param name name of schedule to delete
 	 * @exception NoNameEnteredException 이름이 입력되지 않았을 때
 	 * @exception NoNameMatchException   입력된 이름을 가진 schedule이 없을 때
@@ -157,7 +153,6 @@ public class Calendar {
 
 	/**
 	 * change details of schedule
-	 * 
 	 * @param all variables in class Schedule & new name of schedule
 	 * @exception NoNameEnteredException        	이름이 입력되지 않았을 때
 	 * @exception AlreadyDefinedException        	이미 같은 이름의 일정이 존재할 때
@@ -176,6 +171,11 @@ public class Calendar {
 		add_schedule(new_name, start, end, isImp, overlap, memo, repeat, isAllDay);
 	}
 
+	/**
+	 * read schedule from arraylist 'schedules' on specific date
+	 * @param today		specific date
+	 * @return			schedules on specific date
+	 */
 	public ArrayList<Schedule> read_schedule(LocalDate today) {
 		ArrayList<Schedule> schedule_of_day = new ArrayList<>();
 
