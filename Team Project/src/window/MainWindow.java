@@ -99,6 +99,7 @@ class MainFrame extends JFrame {
 		gbc_AddButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_AddButton.gridx = 5;
 		gbc_AddButton.gridy = 2;
+		AddButton.addActionListener(new AddButtonClickListener());
 		ButtonPanel.add(AddButton, gbc_AddButton);
 		
 		JPanel CalendarPanel = new JPanel();
@@ -167,6 +168,38 @@ class MainFrame extends JFrame {
 	}
 	
 	class DayButtonClickListener implements ActionListener {
+		public void actionPerformed (ActionEvent e) {	
+			
+		}
+	}
+	
+	class AddButtonClickListener implements ActionListener {
+		public void actionPerformed (ActionEvent e) {
+			String[] names = scheduler.get_name();
+			AddScheduleFrame asf = new AddScheduleFrame(names);
+			asf.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			asf.getSubmitButton().addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Calendar c = scheduler.get_calendar(asf.getCalendarName());
+					JCheckBox[] cb = asf.getCheckBox();
+					while(true) {
+						try {
+							c.add_schedule(asf.getName(), asf.getTime(false), asf.getTime(true), cb[3].isSelected(), cb[2].isSelected(), asf.getMemo(), asf.getRepeat(), cb[1].isSelected());
+							break;
+						} catch (RuntimeException e1) {
+							e1.printStackTrace();
+						} 
+					}
+					asf.setVisible(false);
+					asf.dispose();
+					loadCalendar();
+				}
+			});
+			asf.setVisible(true);
+		}
+	}
+	
+	class SubmitButtonClickListener implements ActionListener {
 		public void actionPerformed (ActionEvent e) {
 			
 		}
@@ -194,7 +227,12 @@ class MainFrame extends JFrame {
 			button.setHorizontalAlignment(SwingConstants.LEFT);
 			button.setVerticalAlignment(SwingConstants.TOP);
 			ArrayList<Schedule> schedules = cal.read_schedule(date.plusDays(i));
-			button.setText("<html><h2>" + (i + 1) + "</h2><br>"+ schedules.size() +"건</html>");
+			if (schedules.size() == 0) {
+				button.setText("<html><h2>" + (i + 1) + "</h2></html>");
+			}
+			else {
+				button.setText("<html><h2>" + (i + 1) + "</h2><br>"+ schedules.size() +"건</html>");
+			}
 		}
 	}
 }

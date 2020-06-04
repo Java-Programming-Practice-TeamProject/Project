@@ -1,297 +1,359 @@
-import java.awt.EventQueue;
+package window;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
-import javax.swing.JSpinner;
-import javax.swing.JComboBox;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SpinnerDateModel;
-import java.util.Date;
-import java.util.Calendar;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.DefaultComboBoxModel;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class AddSchedule {
+import javax.swing.*;
+import javax.swing.GroupLayout.*;
+import javax.swing.LayoutStyle.*;
+import javax.swing.event.*;
 
-	private JFrame frame;
-	private JTextField NametextField;
-	private JTextField textField_1;
-
+public class AddScheduleFrame extends JFrame {
 	/**
-	 * Launch the application.
+	 * 
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddSchedule window = new AddSchedule();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	private static final long serialVersionUID = -2554199206713652387L;
+	private JButton SubmitButton;
+	private JComboBox<String> CalendarComboBox, RepeatComboBox;
+	private JCheckBox[] CheckBox; //TODO, FD, OL, Imp
+	private JTextField NameTextField, MemoTextField;
+	private JSpinner[] StartTimeSpinner;
+	private JSpinner[] EndTimeSpinner;
+	
+	public JButton getSubmitButton() {
+		return SubmitButton;
+	}
+	
+	public String getCalendarName() {
+		return CalendarComboBox.getSelectedItem().toString();
+	}
+	
+	public String getName() {
+		return NameTextField.getText();
+	}
+	
+	public String getMemo() {
+		return MemoTextField.getText();
+	}
+	
+	public JCheckBox[] getCheckBox() {
+		return CheckBox;
+	}
+	
+	public int getRepeat() {
+		if (RepeatComboBox.getSelectedItem().toString().equals("None")) {
+			return 0;
+		} else if (RepeatComboBox.getSelectedItem().toString().equals("Every year")) {
+			return 1;
+		} else if (RepeatComboBox.getSelectedItem().toString().equals("Every month")) {
+			return 2;
+		} else  {
+			return 3;
+		}
+	}
+	
+	public int[] getTime(boolean mode) {
+		int[] time = new int[5];
+		JSpinner[] spinner = StartTimeSpinner;
+		if (mode) {
+			spinner = EndTimeSpinner;
+		}
+		for (int i = 0; i < 5; i++) {
+			time[i] = (int) spinner[i].getValue();
+		}
+		return time;
 	}
 
-	/**
-	 * Create the application.
-	 */
-	public AddSchedule() {
-		initialize();
-	}
+	public AddScheduleFrame(String[] names) {
+		setBounds(100, 100, 294, 609);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(new BorderLayout(0, 0));
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 294, 609);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
 		JPanel panel_2 = new JPanel();
-		frame.getContentPane().add(panel_2, BorderLayout.SOUTH);
-		
-		JButton btnNewButton = new JButton("Submit");
-		panel_2.add(btnNewButton);
-		
+		getContentPane().add(panel_2, BorderLayout.SOUTH);
+
+		SubmitButton = new JButton("Submit");
+		panel_2.add(SubmitButton);
+
 		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.WEST);
-		
-		JLabel Name = new JLabel("Name");
-		
-		JLabel lblNewLabel_1 = new JLabel("TODO");
-		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("");
-		
-		JLabel lblNewLabel_2 = new JLabel("Full day");
-		
-		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("");
-		
-		JLabel lblNewLabel_3 = new JLabel("Time");
-		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.YEAR));
-		spinner.setEditor(new JSpinner.DateEditor(spinner, "yyyy"));
-		
-		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.MONTH));
-		spinner_1.setEditor(new JSpinner.DateEditor(spinner_1, "MM"));
-		
-		JSpinner spinner_2 = new JSpinner();
-		spinner_2.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_MONTH));
-		spinner_2.setEditor(new JSpinner.DateEditor(spinner_2, "dd"));
-		
-		JSpinner spinner_3 = new JSpinner();
-		spinner_3.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.HOUR_OF_DAY));
-		spinner_3.setEditor(new JSpinner.DateEditor(spinner_3, "HH"));
-		
-		JSpinner spinner_4 = new JSpinner();
-		spinner_4.setModel(new SpinnerNumberModel(0, 0, 45, 15));
-		
-		JSpinner spinner_5 = new JSpinner();
-		spinner_5.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.YEAR));
-		spinner_5.setEditor(new JSpinner.DateEditor(spinner_5, "yyyy"));
+		getContentPane().add(panel, BorderLayout.WEST);
 
+		JLabel NameLbl = new JLabel("Name");
+		JLabel TdLbl = new JLabel("TODO");
+		JLabel FdLbl = new JLabel("Full day");
+		JLabel TLbl = new JLabel("Time");
+		JLabel ImpLbl = new JLabel("Important");
+		JLabel RLbl = new JLabel("Repeat");
+		JLabel CalLbl = new JLabel("Calendar");
+		JLabel OLbl = new JLabel("Overlap");
+		JLabel MemoLbl = new JLabel("Memo");
 		
-		JSpinner spinner_1_1 = new JSpinner();
-		spinner_1_1.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.HOUR_OF_DAY));
-		spinner_1_1.setEditor(new JSpinner.DateEditor(spinner_1_1, "MM"));
+		CheckBox = new JCheckBox[4];
+		CheckBox[0] = new JCheckBox("");
+		CheckBox[1] = new JCheckBox("");
+		CheckBox[2] = new JCheckBox("");
+		CheckBox[3] = new JCheckBox("");
+		
+		CalendarComboBox = new JComboBox<String>(names);
 
-		
-		JSpinner spinner_2_1 = new JSpinner();
-		spinner_2_1.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_MONTH));
-		spinner_2_1.setEditor(new JSpinner.DateEditor(spinner_2_1, "dd"));
+		LocalDateTime today = LocalDateTime.now();
+		StartTimeSpinner = new JSpinner[5];
+		StartTimeSpinner[0] = new JSpinner(new SpinnerNumberModel(today.getYear(), null, null, 1));
+		StartTimeSpinner[0].setEditor(new JSpinner.NumberEditor(StartTimeSpinner[0], "####"));
+		StartTimeSpinner[0].addChangeListener(new StartSpinnerChangeListener());
+		StartTimeSpinner[1] = new JSpinner(new SpinnerNumberModel(today.getMonthValue(), 1, 12, 1));
+		StartTimeSpinner[1].setEditor(new JSpinner.NumberEditor(StartTimeSpinner[1], "00"));
+		StartTimeSpinner[1].addChangeListener(new StartSpinnerChangeListener());
+		StartTimeSpinner[2] = new JSpinner(new SpinnerNumberModel(today.getDayOfMonth(), 1, today.toLocalDate().lengthOfMonth(), 1));
+		StartTimeSpinner[2].setEditor(new JSpinner.NumberEditor(StartTimeSpinner[2], "00"));
+		StartTimeSpinner[3] = new JSpinner(new SpinnerNumberModel(today.getHour(), 0, 23, 1));
+		StartTimeSpinner[3].setEditor(new JSpinner.NumberEditor(StartTimeSpinner[3], "00"));
+		StartTimeSpinner[4] = new JSpinner(new SpinnerNumberModel(0, 0, 45, 15));
 
-		
-		JSpinner spinner_3_1 = new JSpinner();
-		spinner_3_1.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.MONTH));
-		spinner_3_1.setEditor(new JSpinner.DateEditor(spinner_3_1, "HH"));
-
-		
-		JSpinner spinner_4_1 = new JSpinner();
-		spinner_4_1.setModel(new SpinnerNumberModel(0, 0, 45, 15));
-
-		
-		JLabel lblNewLabel_4 = new JLabel("Calendar");
-		
-		JComboBox comboBox = new JComboBox();
-		
-		JLabel lblNewLabel_5 = new JLabel("Overlap");
-		
-		JCheckBox chckbxNewCheckBox_2 = new JCheckBox("");
-		
-		JLabel lblNewLabel_6 = new JLabel("Important");
-		
-		JCheckBox chckbxNewCheckBox_3 = new JCheckBox("");
-		
-		JLabel lblNewLabel_7 = new JLabel("Repeat");
-		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"None","Every year", "Every month", "Every week"}));
-		
-		JSpinner spinner_6 = new JSpinner();
-		if(comboBox_1.getSelectedItem().toString().equals("None")) {
+		EndTimeSpinner = new JSpinner[5];
+		for (JSpinner s : EndTimeSpinner) {
+			s = new JSpinner();
 		}
-		else if(comboBox_1.getSelectedItem().toString().equals("Every year")) {
-			spinner_6.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_YEAR));
-			spinner_6.setEditor(new JSpinner.DateEditor(spinner_6, "MM/dd"));
-		}
-		else if(comboBox_1.getSelectedItem().toString().equals("Every month")) {
-			spinner_6.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_MONTH));
-			spinner_6.setEditor(new JSpinner.DateEditor(spinner_6, "dd"));
-		}
-		else if(comboBox_1.getSelectedItem().toString().equals("Every week")) {
-			spinner_6.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_WEEK));
-			spinner_6.setEditor(new JSpinner.DateEditor(spinner_6, "E"));
-		}
+		EndTimeSpinner[0] = new JSpinner(new SpinnerNumberModel(today.getYear(), null, null, 1));
+		EndTimeSpinner[0].setEditor(new JSpinner.NumberEditor(EndTimeSpinner[0], "####"));
+		EndTimeSpinner[0].addChangeListener(new EndSpinnerChangeListener());
+		EndTimeSpinner[1] = new JSpinner(new SpinnerNumberModel(today.getMonthValue(), 1, 12, 1));
+		EndTimeSpinner[1].setEditor(new JSpinner.NumberEditor(EndTimeSpinner[1], "00"));
+		EndTimeSpinner[1].addChangeListener(new EndSpinnerChangeListener());
+		EndTimeSpinner[2] = new JSpinner(new SpinnerNumberModel(today.getDayOfMonth(), 1, LocalDate.of((int) EndTimeSpinner[0].getValue(), (int) EndTimeSpinner[1].getValue(), 1).lengthOfMonth(), 1));
+		EndTimeSpinner[2].setEditor(new JSpinner.NumberEditor(EndTimeSpinner[2], "00"));
+		EndTimeSpinner[3] = new JSpinner(new SpinnerNumberModel(today.getHour(), 0, 23, 1));
+		EndTimeSpinner[3].setEditor(new JSpinner.NumberEditor(EndTimeSpinner[3], "00"));
+		EndTimeSpinner[4] = new JSpinner(new SpinnerNumberModel(0, 0, 45, 15));
 
+		RepeatComboBox = new JComboBox<String>();
+		RepeatComboBox
+				.setModel(new DefaultComboBoxModel<String>(new String[] { "None", "Every year", "Every month", "Every week" }));
+
+		JSpinner RepeatSpinner = new JSpinner();
+		/*
+		if (RepeatComboBox.getSelectedItem().toString().equals("None")) {
+		} else if (RepeatComboBox.getSelectedItem().toString().equals("Every year")) {
+			RepeatSpinner.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_YEAR));
+			RepeatSpinner.setEditor(new JSpinner.DateEditor(RepeatSpinner, "MM/dd"));
+		} else if (RepeatComboBox.getSelectedItem().toString().equals("Every month")) {
+			RepeatSpinner.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_MONTH));
+			RepeatSpinner.setEditor(new JSpinner.DateEditor(RepeatSpinner, "dd"));
+		} else if (RepeatComboBox.getSelectedItem().toString().equals("Every week")) {
+			RepeatSpinner.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_WEEK));
+			RepeatSpinner.setEditor(new JSpinner.DateEditor(RepeatSpinner, "E"));
+		}
+		*/
+
+		MemoTextField = new JTextField();
+		MemoTextField.setColumns(10);
+		NameTextField = new JTextField();
+		NameTextField.setColumns(10);
 		
-		JLabel lblNewLabel_8 = new JLabel("Memo");
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		
-		NametextField = new JTextField();
-		NametextField.setColumns(10);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel_8)
-						.addComponent(lblNewLabel_6)
-						.addComponent(lblNewLabel_4)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-								.addComponent(Name, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel_3)
-								.addComponent(lblNewLabel_7)
-								.addComponent(lblNewLabel_5))
-							.addGap(12)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(chckbxNewCheckBox_2)
-								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-									.addComponent(chckbxNewCheckBox_1)
-									.addComponent(chckbxNewCheckBox)
-									.addComponent(NametextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGroup(gl_panel.createSequentialGroup()
-										.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-											.addGroup(gl_panel.createSequentialGroup()
-												.addComponent(spinner_5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.UNRELATED)
+				gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel
+								.createSequentialGroup().addGap(
+										5)
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING).addComponent(MemoLbl)
+										.addComponent(ImpLbl).addComponent(CalLbl)
+										.addGroup(gl_panel.createSequentialGroup()
 												.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-													.addGroup(gl_panel.createSequentialGroup()
-														.addComponent(spinner_3_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(spinner_4_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-													.addGroup(gl_panel.createSequentialGroup()
-														.addComponent(spinner_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(spinner_2_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-											.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-												.addComponent(comboBox_1, 0, 77, Short.MAX_VALUE)
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(spinner_6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-											.addComponent(chckbxNewCheckBox_3)
-											.addGroup(gl_panel.createSequentialGroup()
-												.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.UNRELATED)
+														.addComponent(TdLbl, GroupLayout.PREFERRED_SIZE, 46,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(NameLbl, GroupLayout.PREFERRED_SIZE, 68,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(
+																FdLbl, GroupLayout.PREFERRED_SIZE, 54,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(TLbl).addComponent(RLbl).addComponent(OLbl))
+												.addGap(12)
 												.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-													.addGroup(gl_panel.createSequentialGroup()
-														.addComponent(spinner_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(spinner_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-													.addGroup(gl_panel.createSequentialGroup()
-														.addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(spinner_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-											.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-											.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE))
-										.addPreferredGap(ComponentPlacement.RELATED))))))
-					.addGap(1091))
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(9)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(Name)
-						.addComponent(NametextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(chckbxNewCheckBox)
-						.addComponent(lblNewLabel_1))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel_2)
-						.addComponent(chckbxNewCheckBox_1))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_3)
-						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(spinner_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(spinner_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(spinner_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(spinner_5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(spinner_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(spinner_2_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(spinner_3_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(spinner_4_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_4)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_5)
-						.addComponent(chckbxNewCheckBox_2))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_6)
-						.addComponent(chckbxNewCheckBox_3))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_7)
-						.addComponent(spinner_6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel_8)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(18, Short.MAX_VALUE))
-		);
+														.addComponent(CheckBox[2]).addGroup(gl_panel
+																.createParallelGroup(Alignment.LEADING).addComponent(
+																		CheckBox[1])
+																.addComponent(CheckBox[0])
+																.addComponent(
+																		NameTextField, GroupLayout.PREFERRED_SIZE,
+																		GroupLayout.DEFAULT_SIZE,
+																		GroupLayout.PREFERRED_SIZE)
+																.addGroup(gl_panel.createSequentialGroup()
+																		.addGroup(gl_panel
+																				.createParallelGroup(Alignment.LEADING)
+																				.addGroup(gl_panel
+																						.createSequentialGroup()
+																						.addComponent(
+																								EndTimeSpinner[0],
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE)
+																						.addPreferredGap(
+																								ComponentPlacement.UNRELATED)
+																						.addGroup(gl_panel
+																								.createParallelGroup(
+																										Alignment.LEADING)
+																								.addGroup(gl_panel
+																										.createSequentialGroup()
+																										.addComponent(
+																												EndTimeSpinner[3],
+																												GroupLayout.PREFERRED_SIZE,
+																												GroupLayout.DEFAULT_SIZE,
+																												GroupLayout.PREFERRED_SIZE)
+																										.addPreferredGap(
+																												ComponentPlacement.UNRELATED)
+																										.addComponent(
+																												EndTimeSpinner[4],
+																												GroupLayout.PREFERRED_SIZE,
+																												GroupLayout.DEFAULT_SIZE,
+																												GroupLayout.PREFERRED_SIZE))
+																								.addGroup(gl_panel
+																										.createSequentialGroup()
+																										.addComponent(
+																												EndTimeSpinner[1],
+																												GroupLayout.PREFERRED_SIZE,
+																												GroupLayout.DEFAULT_SIZE,
+																												GroupLayout.PREFERRED_SIZE)
+																										.addPreferredGap(
+																												ComponentPlacement.UNRELATED)
+																										.addComponent(
+																												EndTimeSpinner[2],
+																												GroupLayout.PREFERRED_SIZE,
+																												GroupLayout.DEFAULT_SIZE,
+																												GroupLayout.PREFERRED_SIZE))))
+																				.addGroup(Alignment.TRAILING, gl_panel
+																						.createSequentialGroup()
+																						.addComponent(RepeatComboBox, 0,
+																								77, Short.MAX_VALUE)
+																						.addPreferredGap(
+																								ComponentPlacement.RELATED)
+																						.addComponent(RepeatSpinner,
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE))
+																				.addComponent(CheckBox[3])
+																				.addGroup(gl_panel
+																						.createSequentialGroup()
+																						.addComponent(
+																								StartTimeSpinner[0],
+																								GroupLayout.PREFERRED_SIZE,
+																								GroupLayout.DEFAULT_SIZE,
+																								GroupLayout.PREFERRED_SIZE)
+																						.addPreferredGap(
+																								ComponentPlacement.UNRELATED)
+																						.addGroup(gl_panel
+																								.createParallelGroup(
+																										Alignment.LEADING)
+																								.addGroup(gl_panel
+																										.createSequentialGroup()
+																										.addComponent(
+																												StartTimeSpinner[3],
+																												GroupLayout.PREFERRED_SIZE,
+																												GroupLayout.DEFAULT_SIZE,
+																												GroupLayout.PREFERRED_SIZE)
+																										.addPreferredGap(
+																												ComponentPlacement.UNRELATED)
+																										.addComponent(
+																												StartTimeSpinner[4],
+																												GroupLayout.PREFERRED_SIZE,
+																												GroupLayout.DEFAULT_SIZE,
+																												GroupLayout.PREFERRED_SIZE))
+																								.addGroup(gl_panel
+																										.createSequentialGroup()
+																										.addComponent(
+																												StartTimeSpinner[1],
+																												GroupLayout.PREFERRED_SIZE,
+																												GroupLayout.DEFAULT_SIZE,
+																												GroupLayout.PREFERRED_SIZE)
+																										.addPreferredGap(
+																												ComponentPlacement.UNRELATED)
+																										.addComponent(
+																												StartTimeSpinner[2],
+																												GroupLayout.PREFERRED_SIZE,
+																												GroupLayout.DEFAULT_SIZE,
+																												GroupLayout.PREFERRED_SIZE))))
+																				.addComponent(CalendarComboBox,
+																						GroupLayout.PREFERRED_SIZE, 87,
+																						GroupLayout.PREFERRED_SIZE)
+																				.addComponent(MemoTextField,
+																						GroupLayout.PREFERRED_SIZE, 184,
+																						GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(
+																				ComponentPlacement.RELATED))))))
+								.addGap(1091)));
+		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup().addGap(9)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(NameLbl).addComponent(
+								NameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE))
+						.addGap(18)
+						.addGroup(gl_panel
+								.createParallelGroup(Alignment.BASELINE).addComponent(CheckBox[0]).addComponent(TdLbl))
+						.addGap(18)
+						.addGroup(gl_panel
+								.createParallelGroup(Alignment.LEADING).addComponent(FdLbl).addComponent(CheckBox[1]))
+						.addGap(18)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(TLbl)
+								.addComponent(StartTimeSpinner[0], GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(StartTimeSpinner[1], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(StartTimeSpinner[2], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(StartTimeSpinner[3], GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(StartTimeSpinner[4], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(EndTimeSpinner[0], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(EndTimeSpinner[1], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(EndTimeSpinner[2], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(EndTimeSpinner[3], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(EndTimeSpinner[4], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addGap(18)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(CalLbl).addComponent(
+								CalendarComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE))
+						.addGap(18)
+						.addGroup(gl_panel
+								.createParallelGroup(Alignment.BASELINE).addComponent(OLbl).addComponent(CheckBox[2]))
+						.addGap(18)
+						.addGroup(gl_panel
+								.createParallelGroup(Alignment.BASELINE).addComponent(ImpLbl).addComponent(CheckBox[3]))
+						.addGap(18)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(RepeatComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(RLbl).addComponent(RepeatSpinner, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING).addComponent(MemoLbl).addComponent(
+								MemoTextField, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+						.addContainerGap(18, Short.MAX_VALUE)));
 		panel.setLayout(gl_panel);
-		
 
 	}
-
+	
+	class StartSpinnerChangeListener implements ChangeListener {
+		public void stateChanged(ChangeEvent e) {
+			StartTimeSpinner[2].setModel(new SpinnerNumberModel(1, 1, LocalDate.of((int) StartTimeSpinner[0].getValue(), (int) StartTimeSpinner[1].getValue(), 1).lengthOfMonth(), 1));
+		}
+	}
+	
+	class EndSpinnerChangeListener implements ChangeListener {
+		public void stateChanged(ChangeEvent e) {
+			EndTimeSpinner[2].setModel(new SpinnerNumberModel(1, 1, LocalDate.of((int) EndTimeSpinner[0].getValue(), (int) EndTimeSpinner[1].getValue(), 1).lengthOfMonth(), 1));
+		}
+	}
 }

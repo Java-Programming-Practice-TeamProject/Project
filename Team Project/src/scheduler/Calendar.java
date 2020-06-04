@@ -50,7 +50,6 @@ public class Calendar {
      * @param   all variables in class Schedule
      * @exception AlreadyDefinedException			이미 같은 이름의 일정이 존재할 때
      * @exception NoNameEnteredException			이름이 입력되지 않았을 때
-     * @exception NoTimeEnteredException			시간이 입력되지 않았을 때
      * @exception TimeAlreadyFullException		   	이미 그 시간에 일정이 존재할 때
      * @exception StartTimeAfterEndTimeException	시작 시간이 끝나는 시간보다 늦을 때
 	 * @exception NotRepeatableException		 	일정이 반복 간격보다 길 때
@@ -60,14 +59,10 @@ public class Calendar {
 		LocalDate time;
 		Schedule new_schedule;
 		
-		if(name == null) {
+		if(name.length() == 0) {
     		throw new NoNameEnteredException();
     	}
-    	
-    	if(start == null || end == null) {
-    		throw new NoTimeEnteredException();
-		}
-		
+
 		if (isAllDay) {
 			time = LocalDate.of(start[0], start[1], start[2]);
 			new_schedule = new FullDaySchedule(name, isImp, memo, repeat, time);
