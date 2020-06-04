@@ -1,7 +1,7 @@
 package exception;
 
 public class EmptyCalendarException extends RuntimeException {
-\
+	
 	/**
 	 *
 	 */
