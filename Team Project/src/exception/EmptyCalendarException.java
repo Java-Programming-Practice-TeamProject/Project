@@ -1,6 +1,11 @@
 package exception;
 
 public class EmptyCalendarException extends RuntimeException {
+\
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 7321227076245631572L;
 
 	public EmptyCalendarException() {
 		// TODO Auto-generated constructor stub
