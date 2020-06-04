@@ -1,3 +1,6 @@
+package window;
+
+import scheduler.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,6 +15,8 @@ public class MainWindow {
 }
 
 class MainFrame extends JFrame {
+	private static final long serialVersionUID = 26869752226168311L;
+	
 	Scheduler scheduler = new Scheduler();
 	JComboBox<String> calendarComboBox;
 	JSpinner yearSpinner, monthSpinner;

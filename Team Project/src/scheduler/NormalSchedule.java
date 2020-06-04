@@ -1,3 +1,5 @@
+package scheduler;
+
 import java.time.LocalDateTime;
 
 public class NormalSchedule extends Schedule {

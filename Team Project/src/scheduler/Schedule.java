@@ -1,3 +1,5 @@
+package scheduler;
+
 public class Schedule {
     protected String name;
     protected boolean isImportant;

@@ -1,3 +1,5 @@
+package scheduler;
+
 import java.time.LocalDate;
 
 public class FullDaySchedule extends Schedule{

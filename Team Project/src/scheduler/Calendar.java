@@ -1,3 +1,6 @@
+package scheduler;
+
+import exception.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.time.LocalDate;
@@ -286,75 +289,5 @@ public class Calendar {
 		}
 
 		return schedule_of_day;
-	}
-}
-
-class AlreadyDefinedException extends RuntimeException {
-	AlreadyDefinedException() {
-		super();
-	}
-
-	AlreadyDefinedException(String message) {
-		super(message);
-	}
-}
-
-class NoNameEnteredException extends RuntimeException {
-	NoNameEnteredException() {
-		super();
-	}
-
-	NoNameEnteredException(String message) {
-		super(message);
-	}
-}
-
-class NoTimeEnteredException extends RuntimeException {
-	NoTimeEnteredException() {
-		super();
-	}
-
-	NoTimeEnteredException(String message) {
-		super(message);
-	}
-}
-
-class TimeAlreadyFullException extends RuntimeException {
-	TimeAlreadyFullException() {
-		super();
-	}
-
-	TimeAlreadyFullException(String message) {
-		super(message);
-	}
-}
-
-class StartTimeAfterEndTimeException extends RuntimeException {
-	StartTimeAfterEndTimeException() {
-		super();
-	}
-
-	StartTimeAfterEndTimeException(String message) {
-		super(message);
-	}
-}
-
-class NoNameMatchException extends RuntimeException {
-	NoNameMatchException() {
-		super();
-	}
-
-	NoNameMatchException(String message) {
-		super(message);
-	}
-}
-
-class NotRepeatableException extends RuntimeException {
-	NotRepeatableException() {
-		super();
-	}
-
-	NotRepeatableException(String message) {
-		super(message);
 	}
 }
