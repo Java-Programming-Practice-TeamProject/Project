@@ -182,17 +182,14 @@ class MainFrame extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					Calendar c = scheduler.get_calendar(asf.getCalendarName());
 					JCheckBox[] cb = asf.getCheckBox();
-					while(true) {
-						try {
-							c.add_schedule(asf.getName(), asf.getTime(false), asf.getTime(true), cb[3].isSelected(), cb[2].isSelected(), asf.getMemo(), asf.getRepeat(), cb[1].isSelected());
-							break;
-						} catch (RuntimeException e1) {
-							e1.printStackTrace();
-						} 
-					}
-					asf.setVisible(false);
-					asf.dispose();
-					loadCalendar();
+					try {
+						c.add_schedule(asf.getName(), asf.getTime(false), asf.getTime(true), cb[3].isSelected(), cb[2].isSelected(), asf.getMemo(), asf.getRepeat(), cb[1].isSelected());
+						asf.setVisible(false);
+						asf.dispose();
+						loadCalendar();
+					} catch (RuntimeException e1) {
+						JOptionPane.showMessageDialog(asf, e1.toString(), "Exception", JOptionPane.ERROR_MESSAGE);
+					} 
 				}
 			});
 			asf.setVisible(true);
