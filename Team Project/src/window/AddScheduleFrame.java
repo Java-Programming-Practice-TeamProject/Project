@@ -1,6 +1,7 @@
 package window;
 
-import java.awt.BorderLayout;
+import java.awt.*;
+import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -16,31 +17,31 @@ public class AddScheduleFrame extends JFrame {
 	private static final long serialVersionUID = -2554199206713652387L;
 	private JButton SubmitButton;
 	private JComboBox<String> CalendarComboBox, RepeatComboBox;
-	private JCheckBox[] CheckBox; //TODO, FD, OL, Imp
+	private JCheckBox[] CheckBox; // TODO, FD, OL, Imp
 	private JTextField NameTextField, MemoTextField;
 	private JSpinner[] StartTimeSpinner;
 	private JSpinner[] EndTimeSpinner;
-	
+
 	public JButton getSubmitButton() {
 		return SubmitButton;
 	}
-	
+
 	public String getCalendarName() {
 		return CalendarComboBox.getSelectedItem().toString();
 	}
-	
+
 	public String getName() {
 		return NameTextField.getText();
 	}
-	
+
 	public String getMemo() {
 		return MemoTextField.getText();
 	}
-	
+
 	public JCheckBox[] getCheckBox() {
 		return CheckBox;
 	}
-	
+
 	public int getRepeat() {
 		if (RepeatComboBox.getSelectedItem().toString().equals("None")) {
 			return 0;
@@ -48,11 +49,11 @@ public class AddScheduleFrame extends JFrame {
 			return 1;
 		} else if (RepeatComboBox.getSelectedItem().toString().equals("Every month")) {
 			return 2;
-		} else  {
+		} else {
 			return 3;
 		}
 	}
-	
+
 	public int[] getTime(boolean mode) {
 		int[] time = new int[5];
 		JSpinner[] spinner = StartTimeSpinner;
@@ -65,7 +66,7 @@ public class AddScheduleFrame extends JFrame {
 		return time;
 	}
 
-	public AddScheduleFrame(String[] names) {
+	public AddScheduleFrame(String[] names, String name) {
 		setBounds(100, 100, 294, 609);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -88,14 +89,35 @@ public class AddScheduleFrame extends JFrame {
 		JLabel CalLbl = new JLabel("Calendar");
 		JLabel OLbl = new JLabel("Overlap");
 		JLabel MemoLbl = new JLabel("Memo");
-		
+
 		CheckBox = new JCheckBox[4];
 		CheckBox[0] = new JCheckBox("");
 		CheckBox[1] = new JCheckBox("");
 		CheckBox[2] = new JCheckBox("");
 		CheckBox[3] = new JCheckBox("");
-		
+		CheckBox[1].addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					for (JSpinner s : EndTimeSpinner) {
+						s.setEnabled(false);
+					}
+					StartTimeSpinner[3].setEnabled(false);
+					StartTimeSpinner[4].setEnabled(false);
+					CheckBox[2].setEnabled(false);
+				}
+				else {
+					for (JSpinner s : EndTimeSpinner) {
+						s.setEnabled(true);
+					}
+					StartTimeSpinner[3].setEnabled(true);
+					StartTimeSpinner[4].setEnabled(true);
+					CheckBox[2].setEnabled(true);
+				}
+			}
+		});
+
 		CalendarComboBox = new JComboBox<String>(names);
+		CalendarComboBox.setSelectedItem(name);
 
 		LocalDateTime today = LocalDateTime.now();
 		StartTimeSpinner = new JSpinner[5];
@@ -105,7 +127,8 @@ public class AddScheduleFrame extends JFrame {
 		StartTimeSpinner[1] = new JSpinner(new SpinnerNumberModel(today.getMonthValue(), 1, 12, 1));
 		StartTimeSpinner[1].setEditor(new JSpinner.NumberEditor(StartTimeSpinner[1], "00"));
 		StartTimeSpinner[1].addChangeListener(new StartSpinnerChangeListener());
-		StartTimeSpinner[2] = new JSpinner(new SpinnerNumberModel(today.getDayOfMonth(), 1, today.toLocalDate().lengthOfMonth(), 1));
+		StartTimeSpinner[2] = new JSpinner(
+				new SpinnerNumberModel(today.getDayOfMonth(), 1, today.toLocalDate().lengthOfMonth(), 1));
 		StartTimeSpinner[2].setEditor(new JSpinner.NumberEditor(StartTimeSpinner[2], "00"));
 		StartTimeSpinner[3] = new JSpinner(new SpinnerNumberModel(today.getHour(), 0, 23, 1));
 		StartTimeSpinner[3].setEditor(new JSpinner.NumberEditor(StartTimeSpinner[3], "00"));
@@ -121,36 +144,23 @@ public class AddScheduleFrame extends JFrame {
 		EndTimeSpinner[1] = new JSpinner(new SpinnerNumberModel(today.getMonthValue(), 1, 12, 1));
 		EndTimeSpinner[1].setEditor(new JSpinner.NumberEditor(EndTimeSpinner[1], "00"));
 		EndTimeSpinner[1].addChangeListener(new EndSpinnerChangeListener());
-		EndTimeSpinner[2] = new JSpinner(new SpinnerNumberModel(today.getDayOfMonth(), 1, LocalDate.of((int) EndTimeSpinner[0].getValue(), (int) EndTimeSpinner[1].getValue(), 1).lengthOfMonth(), 1));
+		EndTimeSpinner[2] = new JSpinner(new SpinnerNumberModel(today.getDayOfMonth(), 1,
+				LocalDate.of((int) EndTimeSpinner[0].getValue(), (int) EndTimeSpinner[1].getValue(), 1).lengthOfMonth(),
+				1));
 		EndTimeSpinner[2].setEditor(new JSpinner.NumberEditor(EndTimeSpinner[2], "00"));
 		EndTimeSpinner[3] = new JSpinner(new SpinnerNumberModel(today.getHour(), 0, 23, 1));
 		EndTimeSpinner[3].setEditor(new JSpinner.NumberEditor(EndTimeSpinner[3], "00"));
 		EndTimeSpinner[4] = new JSpinner(new SpinnerNumberModel(0, 0, 45, 15));
 
 		RepeatComboBox = new JComboBox<String>();
-		RepeatComboBox
-				.setModel(new DefaultComboBoxModel<String>(new String[] { "None", "Every year", "Every month", "Every week" }));
-
-		JSpinner RepeatSpinner = new JSpinner();
-		/*
-		if (RepeatComboBox.getSelectedItem().toString().equals("None")) {
-		} else if (RepeatComboBox.getSelectedItem().toString().equals("Every year")) {
-			RepeatSpinner.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_YEAR));
-			RepeatSpinner.setEditor(new JSpinner.DateEditor(RepeatSpinner, "MM/dd"));
-		} else if (RepeatComboBox.getSelectedItem().toString().equals("Every month")) {
-			RepeatSpinner.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_MONTH));
-			RepeatSpinner.setEditor(new JSpinner.DateEditor(RepeatSpinner, "dd"));
-		} else if (RepeatComboBox.getSelectedItem().toString().equals("Every week")) {
-			RepeatSpinner.setModel(new SpinnerDateModel(new Date(1591023600000L), null, null, Calendar.DAY_OF_WEEK));
-			RepeatSpinner.setEditor(new JSpinner.DateEditor(RepeatSpinner, "E"));
-		}
-		*/
+		RepeatComboBox.setModel(
+				new DefaultComboBoxModel<String>(new String[] { "None", "Every year", "Every month", "Every week" }));
 
 		MemoTextField = new JTextField();
 		MemoTextField.setColumns(10);
 		NameTextField = new JTextField();
 		NameTextField.setColumns(10);
-		
+
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
@@ -170,8 +180,8 @@ public class AddScheduleFrame extends JFrame {
 																GroupLayout.PREFERRED_SIZE)
 														.addComponent(TLbl).addComponent(RLbl).addComponent(OLbl))
 												.addGap(12)
-												.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-														.addComponent(CheckBox[2]).addGroup(gl_panel
+												.addGroup(gl_panel.createParallelGroup(
+														Alignment.LEADING).addComponent(CheckBox[2]).addGroup(gl_panel
 																.createParallelGroup(Alignment.LEADING).addComponent(
 																		CheckBox[1])
 																.addComponent(CheckBox[0])
@@ -184,8 +194,7 @@ public class AddScheduleFrame extends JFrame {
 																				.createParallelGroup(Alignment.LEADING)
 																				.addGroup(gl_panel
 																						.createSequentialGroup()
-																						.addComponent(
-																								EndTimeSpinner[0],
+																						.addComponent(EndTimeSpinner[0],
 																								GroupLayout.PREFERRED_SIZE,
 																								GroupLayout.DEFAULT_SIZE,
 																								GroupLayout.PREFERRED_SIZE)
@@ -225,13 +234,7 @@ public class AddScheduleFrame extends JFrame {
 																				.addGroup(Alignment.TRAILING, gl_panel
 																						.createSequentialGroup()
 																						.addComponent(RepeatComboBox, 0,
-																								77, Short.MAX_VALUE)
-																						.addPreferredGap(
-																								ComponentPlacement.RELATED)
-																						.addComponent(RepeatSpinner,
-																								GroupLayout.PREFERRED_SIZE,
-																								GroupLayout.DEFAULT_SIZE,
-																								GroupLayout.PREFERRED_SIZE))
+																								77, Short.MAX_VALUE))
 																				.addComponent(CheckBox[3])
 																				.addGroup(gl_panel
 																						.createSequentialGroup()
@@ -295,16 +298,16 @@ public class AddScheduleFrame extends JFrame {
 								.createParallelGroup(Alignment.LEADING).addComponent(FdLbl).addComponent(CheckBox[1]))
 						.addGap(18)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(TLbl)
-								.addComponent(StartTimeSpinner[0], GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(StartTimeSpinner[0], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
 								.addComponent(StartTimeSpinner[1], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
 								.addComponent(StartTimeSpinner[2], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(StartTimeSpinner[3], GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(StartTimeSpinner[3], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
 								.addComponent(StartTimeSpinner[4], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(ComponentPlacement.RELATED)
@@ -335,8 +338,7 @@ public class AddScheduleFrame extends JFrame {
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(RepeatComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
-								.addComponent(RLbl).addComponent(RepeatSpinner, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(RLbl))
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING).addComponent(MemoLbl).addComponent(
 								MemoTextField, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
@@ -344,16 +346,19 @@ public class AddScheduleFrame extends JFrame {
 		panel.setLayout(gl_panel);
 
 	}
-	
+
 	class StartSpinnerChangeListener implements ChangeListener {
 		public void stateChanged(ChangeEvent e) {
-			StartTimeSpinner[2].setModel(new SpinnerNumberModel(1, 1, LocalDate.of((int) StartTimeSpinner[0].getValue(), (int) StartTimeSpinner[1].getValue(), 1).lengthOfMonth(), 1));
+			StartTimeSpinner[2].setModel(new SpinnerNumberModel(1, 1, LocalDate
+					.of((int) StartTimeSpinner[0].getValue(), (int) StartTimeSpinner[1].getValue(), 1).lengthOfMonth(),
+					1));
 		}
 	}
-	
+
 	class EndSpinnerChangeListener implements ChangeListener {
 		public void stateChanged(ChangeEvent e) {
-			EndTimeSpinner[2].setModel(new SpinnerNumberModel(1, 1, LocalDate.of((int) EndTimeSpinner[0].getValue(), (int) EndTimeSpinner[1].getValue(), 1).lengthOfMonth(), 1));
+			EndTimeSpinner[2].setModel(new SpinnerNumberModel(1, 1, LocalDate
+					.of((int) EndTimeSpinner[0].getValue(), (int) EndTimeSpinner[1].getValue(), 1).lengthOfMonth(), 1));
 		}
 	}
 }

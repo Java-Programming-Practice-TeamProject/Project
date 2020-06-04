@@ -8,13 +8,7 @@ import javax.swing.event.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
-public class MainWindow {
-	public static void main(String[] args) {
-        MainFrame mf = new MainFrame();
-    }
-}
-
-class MainFrame extends JFrame {
+public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 26869752226168311L;
 	
 	Scheduler scheduler = new Scheduler();
@@ -163,7 +157,29 @@ class MainFrame extends JFrame {
 	
 	class WeekButtonClickListener implements ActionListener {
 		public void actionPerformed (ActionEvent e) {
-			
+			int year = (int) yearSpinner.getValue(), month = (int) monthSpinner.getValue();
+			Calendar cal = scheduler.get_calendar(calendarComboBox.getSelectedItem().toString());
+			ArrayList<ArrayList<Schedule>> schedule = new ArrayList<>();
+			JButton button = (JButton) e.getSource();
+			int i = Integer.parseInt(button.getText()) - 1;
+
+			for (int j = 0; j < 7; j++) {
+				JButton db = DayButton.get(7 * i + j);
+				if (db.getText().isEmpty()) {
+					schedule.add(new ArrayList<Schedule>());
+					continue;
+				}
+				String day = db.getText().substring(10, 12);
+				if (day.charAt(1) == '<') {
+					day = day.substring(0, 1);
+				}
+				LocalDate today = LocalDate.of(year, month, Integer.parseInt(day));
+				schedule.add(cal.read_schedule(today));
+			}
+
+			WeeklyScheduleFrame wsf = new WeeklyScheduleFrame(schedule);
+			wsf.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			wsf.setVisible(true);
 		}
 	}
 	
@@ -176,7 +192,7 @@ class MainFrame extends JFrame {
 	class AddButtonClickListener implements ActionListener {
 		public void actionPerformed (ActionEvent e) {
 			String[] names = scheduler.get_name();
-			AddScheduleFrame asf = new AddScheduleFrame(names);
+			AddScheduleFrame asf = new AddScheduleFrame(names, calendarComboBox.getSelectedItem().toString());
 			asf.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			asf.getSubmitButton().addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {

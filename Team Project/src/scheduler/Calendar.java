@@ -1,6 +1,7 @@
 package scheduler;
 
 import exception.*;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.time.LocalDate;
@@ -210,13 +211,19 @@ public class Calendar {
 							}
 							end_month += 12;
 						}
-
-						if (start_month == today_month && start_day <= today_day) {
-							flag = true;
-						} else if (end_month == today_month && today_day <= end_day) {
-							flag = true;
-						} else if (start_month < today_month && today_month < end_month) {
-							flag = true;
+						if (start_month == end_month) {
+							if (start_day <= today_day && today_day <= end_day) {
+								flag = true;
+							}
+						}
+						else {
+							if (start_month == today_month && start_day <= today_day) {
+								flag = true;
+							} else if (end_month == today_month && today_day <= end_day) {
+								flag = true;
+							} else if (start_month < today_month && today_month < end_month) {
+								flag = true;
+							}
 						}
 					} else {
 						LocalDate time = ((FullDaySchedule) s).getTime();
