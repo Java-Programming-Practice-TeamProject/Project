@@ -8,13 +8,7 @@ import javax.swing.event.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
-public class MainWindow {
-	public static void main(String[] args) {
-        MainFrame mf = new MainFrame();
-    }
-}
-
-class MainFrame extends JFrame {
+public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 26869752226168311L;
 	
 	Scheduler scheduler = new Scheduler();
@@ -99,6 +93,7 @@ class MainFrame extends JFrame {
 		gbc_AddButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_AddButton.gridx = 5;
 		gbc_AddButton.gridy = 2;
+		AddButton.addActionListener(new AddButtonClickListener());
 		ButtonPanel.add(AddButton, gbc_AddButton);
 		
 		JPanel CalendarPanel = new JPanel();
@@ -162,11 +157,62 @@ class MainFrame extends JFrame {
 	
 	class WeekButtonClickListener implements ActionListener {
 		public void actionPerformed (ActionEvent e) {
-			
+			int year = (int) yearSpinner.getValue(), month = (int) monthSpinner.getValue();
+			Calendar cal = scheduler.get_calendar(calendarComboBox.getSelectedItem().toString());
+			ArrayList<ArrayList<Schedule>> schedule = new ArrayList<>();
+			JButton button = (JButton) e.getSource();
+			int i = Integer.parseInt(button.getText()) - 1;
+
+			for (int j = 0; j < 7; j++) {
+				JButton db = DayButton.get(7 * i + j);
+				if (db.getText().isEmpty()) {
+					schedule.add(new ArrayList<Schedule>());
+					continue;
+				}
+				String day = db.getText().substring(10, 12);
+				if (day.charAt(1) == '<') {
+					day = day.substring(0, 1);
+				}
+				LocalDate today = LocalDate.of(year, month, Integer.parseInt(day));
+				schedule.add(cal.read_schedule(today));
+			}
+
+			WeeklyScheduleFrame wsf = new WeeklyScheduleFrame(schedule);
+			wsf.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			wsf.setVisible(true);
 		}
 	}
 	
 	class DayButtonClickListener implements ActionListener {
+		public void actionPerformed (ActionEvent e) {	
+			
+		}
+	}
+	
+	class AddButtonClickListener implements ActionListener {
+		public void actionPerformed (ActionEvent e) {
+			String[] names = scheduler.get_name();
+			AddScheduleFrame asf = new AddScheduleFrame(names, calendarComboBox.getSelectedItem().toString());
+			asf.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			asf.getSubmitButton().addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Calendar c = scheduler.get_calendar(asf.getCalendarName());
+					JCheckBox[] cb = asf.getCheckBox();
+					try {
+						c.add_schedule(asf.getName(), asf.getTime(false), asf.getTime(true), cb[3].isSelected(), cb[2].isSelected(), asf.getMemo(), asf.getRepeat(), cb[1].isSelected());
+						asf.setVisible(false);
+						asf.dispose();
+						loadCalendar();
+					} catch (RuntimeException e1) {
+						JOptionPane.showMessageDialog(asf, e1.toString(), "Exception", JOptionPane.ERROR_MESSAGE);
+					} 
+				}
+			});
+			asf.setVisible(true);
+		}
+	}
+	
+	class SubmitButtonClickListener implements ActionListener {
 		public void actionPerformed (ActionEvent e) {
 			
 		}
@@ -194,7 +240,12 @@ class MainFrame extends JFrame {
 			button.setHorizontalAlignment(SwingConstants.LEFT);
 			button.setVerticalAlignment(SwingConstants.TOP);
 			ArrayList<Schedule> schedules = cal.read_schedule(date.plusDays(i));
-			button.setText("<html><h2>" + (i + 1) + "</h2><br>"+ schedules.size() +"건</html>");
+			if (schedules.size() == 0) {
+				button.setText("<html><h2>" + (i + 1) + "</h2></html>");
+			}
+			else {
+				button.setText("<html><h2>" + (i + 1) + "</h2><br>"+ schedules.size() +"건</html>");
+			}
 		}
 	}
 }
