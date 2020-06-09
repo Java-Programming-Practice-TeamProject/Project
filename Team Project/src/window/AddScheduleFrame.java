@@ -10,11 +10,16 @@ import javax.swing.GroupLayout.*;
 import javax.swing.LayoutStyle.*;
 import javax.swing.event.*;
 
+import scheduler.FullDaySchedule;
+import scheduler.NormalSchedule;
+import scheduler.Schedule;
+
 public class AddScheduleFrame extends JFrame {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2554199206713652387L;
+	private JPanel panel, panel_2;
 	private JButton SubmitButton;
 	private JComboBox<String> CalendarComboBox, RepeatComboBox;
 	private JCheckBox[] CheckBox; // TODO, FD, OL, Imp
@@ -71,17 +76,16 @@ public class AddScheduleFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_2 = new JPanel();
+		panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.SOUTH);
 
 		SubmitButton = new JButton("Submit");
 		panel_2.add(SubmitButton);
 
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.WEST);
 
 		JLabel NameLbl = new JLabel("Name");
-		JLabel TdLbl = new JLabel("TODO");
 		JLabel FdLbl = new JLabel("Full day");
 		JLabel TLbl = new JLabel("Time");
 		JLabel ImpLbl = new JLabel("Important");
@@ -91,7 +95,6 @@ public class AddScheduleFrame extends JFrame {
 		JLabel MemoLbl = new JLabel("Memo");
 
 		CheckBox = new JCheckBox[4];
-		CheckBox[0] = new JCheckBox("");
 		CheckBox[1] = new JCheckBox("");
 		CheckBox[2] = new JCheckBox("");
 		CheckBox[3] = new JCheckBox("");
@@ -171,8 +174,6 @@ public class AddScheduleFrame extends JFrame {
 										.addComponent(ImpLbl).addComponent(CalLbl)
 										.addGroup(gl_panel.createSequentialGroup()
 												.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-														.addComponent(TdLbl, GroupLayout.PREFERRED_SIZE, 46,
-																GroupLayout.PREFERRED_SIZE)
 														.addComponent(NameLbl, GroupLayout.PREFERRED_SIZE, 68,
 																GroupLayout.PREFERRED_SIZE)
 														.addComponent(
@@ -184,7 +185,6 @@ public class AddScheduleFrame extends JFrame {
 														Alignment.LEADING).addComponent(CheckBox[2]).addGroup(gl_panel
 																.createParallelGroup(Alignment.LEADING).addComponent(
 																		CheckBox[1])
-																.addComponent(CheckBox[0])
 																.addComponent(
 																		NameTextField, GroupLayout.PREFERRED_SIZE,
 																		GroupLayout.DEFAULT_SIZE,
@@ -290,9 +290,6 @@ public class AddScheduleFrame extends JFrame {
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(NameLbl).addComponent(
 								NameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 								GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_panel
-								.createParallelGroup(Alignment.BASELINE).addComponent(CheckBox[0]).addComponent(TdLbl))
 						.addGap(18)
 						.addGroup(gl_panel
 								.createParallelGroup(Alignment.LEADING).addComponent(FdLbl).addComponent(CheckBox[1]))

@@ -1,32 +1,32 @@
 package exception;
 
-public class EmptyCalendarException extends RuntimeException {
+public class LastCalendarException extends RuntimeException {
 	
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 7321227076245631572L;
 
-	public EmptyCalendarException() {
+	public LastCalendarException() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public EmptyCalendarException(String message) {
+	public LastCalendarException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
 
-	public EmptyCalendarException(Throwable cause) {
+	public LastCalendarException(Throwable cause) {
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public EmptyCalendarException(String message, Throwable cause) {
+	public LastCalendarException(String message, Throwable cause) {
 		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public EmptyCalendarException(String message, Throwable cause, boolean enableSuppression,
+	public LastCalendarException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub

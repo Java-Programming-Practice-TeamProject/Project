@@ -52,7 +52,7 @@ public class Scheduler {
 
         for (Calendar c : calendars) {
             if (name.equals(c.getName())) {
-                throw new AlreadyDefinedException();
+                throw new AlreadyDefinedException("'" + name + "' Calendar is already defined.");
             }
         }
 
@@ -65,15 +65,15 @@ public class Scheduler {
      * @param name  name of calendar to delete
      * @exception NoNameEnteredException        이름이 입력되지 않았을 때
      * @exception NoNameMatchException          입력된 이름을 가진 calendar가 없을 때
-     * @exception EmptyCalendarException        calendar가 비어 있을 때
+     * @exception LastCalendarException         calendar가 하나 남아 있을 때
      */
     public void remove_calendar(String name) {
         if (name.length() == 0 || name == null) {
             throw new NoNameEnteredException();
         }
 
-        if (calendars.isEmpty()) {
-            throw new EmptyCalendarException();
+        if (calendars.size() == 1) {
+            throw new LastCalendarException("There is only one calendar left.");
         }
 
         Iterator<Calendar> iter = calendars.iterator();
@@ -85,7 +85,7 @@ public class Scheduler {
             }
         }
 
-        throw new NoNameMatchException();
+        throw new NoNameMatchException("There is no calendar : '" + name + "'");
     }
 
     /**
@@ -101,11 +101,11 @@ public class Scheduler {
         if (old_name.length() == 0 || old_name == null || new_name.length() == 0 || new_name == null) {
             throw new NoNameEnteredException();
         }
-
+        /*
         if (calendars.isEmpty()) {
             throw new EmptyCalendarException();
         }
-
+        */
         for (Calendar c : calendars) {
             if (new_name.equals(c.getName())) {
                 throw new AlreadyDefinedException();

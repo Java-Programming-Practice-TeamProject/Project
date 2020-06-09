@@ -50,6 +50,7 @@ public class Calendar {
 	 * time[year, month, date, hour, minute]
      * @param   all variables in class Schedule
      * @exception AlreadyDefinedException			이미 같은 이름의 일정이 존재할 때
+	 * @exception TooLongNameEnteredException		이름이 너무 길 때
      * @exception NoNameEnteredException			이름이 입력되지 않았을 때
      * @exception TimeAlreadyFullException		   	이미 그 시간에 일정이 존재할 때
      * @exception StartTimeAfterEndTimeException	시작 시간이 끝나는 시간보다 늦을 때
@@ -62,7 +63,10 @@ public class Calendar {
 		
 		if(name.length() == 0) {
     		throw new NoNameEnteredException();
-    	}
+		}
+		else if (name.length() > 16) {
+			throw new TooLongNameEnteredException();
+		}
 
 		if (isAllDay) {
 			time = LocalDate.of(start[0], start[1], start[2]);
@@ -71,6 +75,9 @@ public class Calendar {
 		else {
 			start_time = LocalDateTime.of(start[0], start[1], start[2], start[3], start[4], 0, 0);
 			end_time = LocalDateTime.of(end[0], end[1], end[2], end[3], end[4], 0, 0);
+			if(start_time.isEqual(end_time)) {
+				throw new SameTimeException();
+			}
 			if(start_time.isAfter(end_time)) {
 				throw new StartTimeAfterEndTimeException();
 			}
