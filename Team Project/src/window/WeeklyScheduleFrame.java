@@ -14,6 +14,7 @@ import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.time.LocalDateTime;
 import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
@@ -64,6 +65,38 @@ public class WeeklyScheduleFrame {
 
 	}
 	*/
+	
+	public WeeklyScheduleFrame(ArrayList<ArrayList<Schedule>> schedule){
+		ShowWeeklyFrame(0);
+		int maxnumofallday = 0;
+		for(int i=0;i<7;i++) {
+			int numofallday = 0;
+			for (Schedule s : schedule[i]) {
+				if(s instanceof FullDaySchedule) {
+					numofallday++;
+				}
+			}
+			if(numofallday>maxnumofallday) {
+				maxnumofallday = numofallday;
+			}
+		}
+		ShowWeeklyFrame(maxnumofallday);
+		for(int i=0;i<7;i++) {
+			int alldayorder = 0;
+			for(Schedule s : schedule[i]) {
+				if(s instanceof FullDaySchedule) {
+					showweeklyalldayschedule(panel,s.getname(),i,Color color, alldayorder++); //TODO : color
+				}else {
+					LocalDateTime starttime = s.getStartTime();
+					int intstarttime = starttime.getHour()*4+starttime.getMinute()%15;
+					LocalDateTime endtime = s.getEndTime();
+					int intendtime = endtime.getHour()*4+endtime.getMinute()%15;
+					showweeklyschedule(panel,s.getname(),i,intstarttime, intendtime, Color color,int num, int order, maxnumofallday);
+				//TODO : color, num, order
+				}
+			}
+		}
+	}
 
 	/**
 	 * Initialize the contents of the frame.
