@@ -67,7 +67,6 @@ public class WeeklyScheduleFrame {
 	*/
 	
 	public WeeklyScheduleFrame(ArrayList<ArrayList<Schedule>> schedule){
-		ShowWeeklyFrame(0);
 		int maxnumofallday = 0;
 		for(int i=0;i<7;i++) {
 			int numofallday = 0;
@@ -84,15 +83,62 @@ public class WeeklyScheduleFrame {
 		for(int i=0;i<7;i++) {
 			int alldayorder = 0;
 			for(Schedule s : schedule[i]) {
+				int[][] overlap = new int[96][100];
 				if(s instanceof FullDaySchedule) {
-					showweeklyalldayschedule(panel,s.getname(),i,Color color, alldayorder++); //TODO : color
+					showweeklyalldayschedule(panel,s.getname(),i,s.getcolor(), alldayorder++);
 				}else {
-					LocalDateTime starttime = s.getStartTime();
+					LocalDateTime starttime = s.getTime();
 					int intstarttime = starttime.getHour()*4+starttime.getMinute()%15;
-					LocalDateTime endtime = s.getEndTime();
+					LocalDateTime endtime = s.getTime();
 					int intendtime = endtime.getHour()*4+endtime.getMinute()%15;
-					showweeklyschedule(panel,s.getname(),i,intstarttime, intendtime, Color color,int num, int order, maxnumofallday);
-				//TODO : color, num, order
+					
+					int order = 0;
+					
+					if(overlap[intstarttime][0]==0&&overlap[intendtime][0]==0) {
+						order = 0;
+						for(int j=intstarttime;j<intendtime;j++) {
+							overlap[j][0]++;
+						}
+					}
+					else if(overlap[intstarttime][0]!=0){
+						int j = 0;
+						while(overlap[intstarttime][j]!=0) {
+							j++;
+						}
+						while(overlap[intendtime][j]!=0) {
+							j++;
+						}
+						for(int k=intstarttime;k<intendtime;k++) {
+							overlap[k][j]++;
+						}
+						order = j;
+					}
+					else if(overlap[intendtime][0]!=0) {
+						int j = 0;
+						while(overlap[intendtime][j]!=0) {
+							j++;
+						}
+						while(overlap[intstarttime][j]!=0) {
+							j++;
+						}
+						for(int k=intstarttime;k<intendtime;k++) {
+							overlap[k][j]++;
+						}
+						order = j;
+					}
+					int num = 0;
+					for(int j=0;j<96;j++) {
+						int sum = 0;
+						for(int k=0;k<100;k++) {
+							sum+=overlap[j][k];
+						}
+						if(sum>num) {
+							sum = num;
+						}
+					}
+	
+					
+					showweeklyschedule(panel,s.getname(),i,intstarttime, intendtime, s.getcolor(), num, order, maxnumofallday);
 				}
 			}
 		}
