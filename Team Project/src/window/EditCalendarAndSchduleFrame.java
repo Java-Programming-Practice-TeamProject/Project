@@ -3,7 +3,6 @@ package window;
 import exception.*;
 import java.awt.*;
 import javax.swing.*;
-
 public class EditCalendarAndSchduleFrame extends JFrame {
 
 	/**
@@ -12,6 +11,7 @@ public class EditCalendarAndSchduleFrame extends JFrame {
 	private static final long serialVersionUID = -2838724568182074884L;
 	private JTextField AddCalendarField, DeleteCalendarField;
 	private JButton AddScheduleButton, SubmitButton;
+	private JComboBox colorcomboBox;
 
 	public JButton getAddScheduleButton() {
 		return AddScheduleButton;
@@ -22,9 +22,10 @@ public class EditCalendarAndSchduleFrame extends JFrame {
 	}
 
 	public String[] getTextField() {
-		String[] text = new String[2];
+		String[] text = new String[3];
 		text[0] = AddCalendarField.getText();
 		text[1] = DeleteCalendarField.getText();
+		text[2] = Integer.toString(colorcomboBox.getSelectedIndex());
 		if (text[0].length() != 0 && text[1].length() != 0) {
 			throw new BothFieldEnteredException("You cannot do two operations at once.");
 		}
@@ -69,11 +70,10 @@ public class EditCalendarAndSchduleFrame extends JFrame {
 		panel_8.add(AddCalendarField);
 		AddCalendarField.setColumns(10);
 		
-		/*
-		JComboBox<String> comboBox = new JComboBox<>();
-		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Red", "Yellow", "Green", "Blue", "Puple"}));
-		panel_8.add(comboBox);
-		*/
+		String colors[] = {"Magenta","Pink","Red","Orange", "Yellow", "Green","Cyan", "Blue","Light Gray","Gray","Dark Gray"};
+		colorcomboBox = new JComboBox(colors);
+		panel_8.add(colorcomboBox);
+		
 		JPanel panel_3 = new JPanel();
 		panel.add(panel_3, BorderLayout.CENTER);
 		panel_3.setLayout(new BorderLayout(0, 0));

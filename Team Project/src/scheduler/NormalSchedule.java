@@ -1,5 +1,6 @@
 package scheduler;
 
+import java.awt.Color;
 import java.time.LocalDateTime;
 
 public class NormalSchedule extends Schedule {
@@ -27,8 +28,8 @@ public class NormalSchedule extends Schedule {
      * @param start     start time of schedule
      * @param end       end time of schedule
      */
-    public NormalSchedule(String n, boolean isImp, boolean overlap, String m, int repeat, LocalDateTime start, LocalDateTime end) {
-        super(n, isImp, m, repeat);
+    public NormalSchedule(String n, boolean isImp, boolean overlap, String m, int repeat, LocalDateTime start, LocalDateTime end,Color c) {
+        super(n, isImp, m, repeat,c);
         start_time = start;
         end_time = end;
         canBeOverlapped = overlap;
