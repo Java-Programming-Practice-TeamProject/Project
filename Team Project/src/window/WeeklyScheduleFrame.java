@@ -150,57 +150,46 @@ public class WeeklyScheduleFrame extends JFrame {
 			int[] order = new int[100];
 			int orderindex = 0;
 			int[][] overlap = new int[96][100];
+			int index = 0;
 			for(Schedule s : schedule.get(i)) {
 				if(s instanceof FullDaySchedule) {
-					showweeklyalldayschedule(panel,s.getName(),i,s.getColor(), alldayorder++);
+					showweeklyalldayschedule(panel,s.getName(),i,s.getcolor(), alldayorder++);
 				}else {
 					NormalSchedule ns = (NormalSchedule) s;
 					LocalDateTime starttime = ns.getStartTime();
 					int intstarttime = starttime.getHour()*4+starttime.getMinute()%15;
 					LocalDateTime endtime = ns.getEndTime();
 					int intendtime = endtime.getHour()*4+endtime.getMinute()%15;
-										
-					if(overlap[intstarttime][0]==0&&overlap[intendtime-1][0]==0) {
-						order[orderindex++] = 0;
-						for(int j=intstarttime;j<intendtime;j++) {
-							overlap[j][0]++;
-						}
-					}
-					else if(overlap[intstarttime][0]!=0){
-						int j = 0;
-						while(overlap[intstarttime][j]!=0) {
-							j++;
-						}
-						while(overlap[intendtime-1][j]!=0) {
-							j++;
-						}
-						for(int k=intstarttime;k<intendtime-1;k++) {
-							overlap[k][j]++;
-						}
-						order[orderindex++] = j;
-					}
-					else if(overlap[intendtime-1][0]!=0) {
-						int j = 0;
-						while(overlap[intendtime-1][j]!=0) {
-							j++;
-						}
-						while(overlap[intstarttime][j]!=0) {
-							j++;
-						}
+					
+					boolean flag = true;
+					
+					for(orderindex=0;orderindex<100;orderindex++) {
 						for(int k=intstarttime;k<intendtime;k++) {
-							overlap[k][j]++;
+							if(overlap[k][orderindex]!=0) {
+								flag = false;
+								break;
+							}
 						}
-						order[orderindex++] = j;
+						if(flag==false) {
+							flag = true;
+							continue;
+						}
+						break;
+
 					}
+					for(int k=intstarttime;k<intendtime;k++) {
+						overlap[k][orderindex] = 1;
+					}					
+					order[index++]=orderindex;
 				}
 			}
 			orderindex = 0;
 			for(Schedule s : schedule.get(i)) {
 				NormalSchedule ns = (NormalSchedule) s;
 				LocalDateTime starttime = ns.getStartTime();
-				int intstarttime = starttime.getHour()*4+starttime.getMinute()%15;
+				int intstarttime = starttime.getHour()*4+starttime.getMinute()/15;
 				LocalDateTime endtime = ns.getEndTime();
-				int intendtime = endtime.getHour()*4+endtime.getMinute()%15;
+				int intendtime = endtime.getHour()*4+endtime.getMinute()/15;
 				
 				int num = 1;
 				for(int j=intstarttime;j<intendtime;j++) {
