@@ -157,9 +157,9 @@ public class WeeklyScheduleFrame extends JFrame {
 				}else {
 					NormalSchedule ns = (NormalSchedule) s;
 					LocalDateTime starttime = ns.getStartTime();
-					int intstarttime = starttime.getHour()*4+starttime.getMinute()%15;
+					int intstarttime = starttime.getHour()*4+starttime.getMinute()/15;
 					LocalDateTime endtime = ns.getEndTime();
-					int intendtime = endtime.getHour()*4+endtime.getMinute()%15;
+					int intendtime = endtime.getHour()*4+endtime.getMinute()/15;
 					
 					boolean flag = true;
 					
