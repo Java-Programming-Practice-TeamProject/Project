@@ -9,6 +9,9 @@ import java.util.Iterator;
 public class Scheduler {
     private ArrayList<Calendar> calendars;
 
+    /**
+     * default constructor of Scheduler
+     */
     public Scheduler() {
         calendars = new ArrayList<>();
         calendars.add(new Calendar("default",Color.LIGHT_GRAY));
@@ -38,7 +41,7 @@ public class Scheduler {
     		}
     	}
     	
-    	throw new NoNameMatchException();
+    	throw new NoNameMatchException("The calendar with that name does not exist.");
     }
 
     /**
@@ -49,7 +52,7 @@ public class Scheduler {
      */
     public void add_calendar(String name, Color color) {
         if (name.length() == 0 || name == null) {
-            throw new NoNameEnteredException();
+            throw new NoNameEnteredException("No name entered.");
         }
 
         for (Calendar c : calendars) {
@@ -71,7 +74,7 @@ public class Scheduler {
      */
     public void remove_calendar(String name) {
         if (name.length() == 0 || name == null) {
-            throw new NoNameEnteredException();
+            throw new NoNameEnteredException("No name entered.");
         }
 
         if (calendars.size() == 1) {
@@ -101,12 +104,12 @@ public class Scheduler {
      */
     public void modify_calendar(String old_name, String new_name) {
         if (old_name.length() == 0 || old_name == null || new_name.length() == 0 || new_name == null) {
-            throw new NoNameEnteredException();
+            throw new NoNameEnteredException("No name entered.");
         }
         
         for (Calendar c : calendars) {
             if (new_name.equals(c.getName())) {
-                throw new AlreadyDefinedException();
+                throw new AlreadyDefinedException("Calendar names cannot be duplicated.");
             }
         }
 
@@ -117,6 +120,6 @@ public class Scheduler {
             }
         }
 
-        throw new NoNameMatchException();
+        throw new NoNameMatchException("The calendar with that name does not exist.");
     }
 }

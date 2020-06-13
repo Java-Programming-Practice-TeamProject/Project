@@ -151,7 +151,7 @@ public class WeeklyScheduleFrame extends JFrame {
 			int index = 0;
 			for(Schedule s : schedule.get(i)) {
 				if(s instanceof FullDaySchedule) {
-					showweeklyalldayschedule(panel,s.getName(),i,s.getcolor(), alldayorder++);
+					showweeklyalldayschedule(panel,s.getName(),i,s.getColor(), alldayorder++);
 				}else {
 					NormalSchedule ns = (NormalSchedule) s;
 					LocalDateTime starttime = ns.getStartTime();
@@ -204,6 +204,8 @@ public class WeeklyScheduleFrame extends JFrame {
 				}		
 			}
 		}
+
+		pack();
 	}
 
 

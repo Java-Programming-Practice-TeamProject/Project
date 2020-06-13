@@ -211,12 +211,12 @@ public class MainFrame extends JFrame {
 				sender = new Sender();
 				break;
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(this, e.toString(), "Exception", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
 		JLabel NameLabel = new JLabel("User: " + name);
-		NameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		NameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		NameLabel.setFont(new Font("굴림", Font.PLAIN, 16));
 		GridBagConstraints gbc_NameLabel = new GridBagConstraints();
 		gbc_NameLabel.insets = new Insets(0, 0, 5, 5);
@@ -333,7 +333,7 @@ public class MainFrame extends JFrame {
 								asf.dispose();
 								loadCalendar();
 							} catch (RuntimeException e1) {
-								JOptionPane.showMessageDialog(asf, e1.toString(), "Exception",
+								JOptionPane.showMessageDialog(asf, e1.getMessage(), "Exception",
 										JOptionPane.ERROR_MESSAGE);
 							}
 						}
@@ -363,7 +363,7 @@ public class MainFrame extends JFrame {
 						ecsf.setVisible(false);
 						ecsf.dispose();
 					} catch (RuntimeException e1) {
-						JOptionPane.showMessageDialog(ecsf, e1.toString(), "Exception", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(ecsf, e1.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -452,9 +452,9 @@ public class MainFrame extends JFrame {
 	}
 
 	public void read_name() {
-		name = JOptionPane.showInputDialog("이름을 입력하세요.");
+		name = JOptionPane.showInputDialog("Enter your name.");
 		if (name.length() == 0) {
-			throw new NoNameEnteredException();
+			throw new NoNameEnteredException("No name entered.");
 		}
 	}
 
@@ -470,7 +470,7 @@ public class MainFrame extends JFrame {
 			dos.flush();
 			boolean isValid = dis.readBoolean();
 			if (!isValid) {
-				throw new AlreadyDefinedException();
+				throw new AlreadyDefinedException("User names cannot be duplicated.");
 			}
 		}
 
@@ -529,7 +529,7 @@ public class MainFrame extends JFrame {
 				dos = new DataOutputStream(socket.getOutputStream());
 			} catch (IOException e) {
 			}
-			System.out.println("receive on");
+			//System.out.println("receive on");
 		}
 
 		public void run() {
@@ -586,7 +586,7 @@ public class MainFrame extends JFrame {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println("receive off");
+			//System.out.println("receive off");
 		}
 	}
 }

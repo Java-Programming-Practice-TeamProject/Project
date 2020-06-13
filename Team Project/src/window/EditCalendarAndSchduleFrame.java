@@ -36,7 +36,7 @@ public class EditCalendarAndSchduleFrame extends JFrame {
 		text[1] = DeleteCalendarField.getText();
 		text[2] = Integer.toString(colorcomboBox.getSelectedIndex());
 		if (text[0].length() != 0 && text[1].length() != 0) {
-			throw new BothFieldEnteredException("You cannot do two operations at once.");
+			throw new BothFieldEnteredException("You cannot add and delete at the same time.");
 		}
 		else {
 			return text;

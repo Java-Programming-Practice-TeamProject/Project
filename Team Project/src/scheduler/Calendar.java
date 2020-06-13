@@ -85,10 +85,10 @@ public class Calendar {
 		Schedule new_schedule;
 		
 		if(name.length() == 0) {
-    		throw new NoNameEnteredException();
+    		throw new NoNameEnteredException("No name entered.");
 		}
 		else if (name.length() > 16) {
-			throw new TooLongNameEnteredException();
+			throw new TooLongNameEnteredException("Name is too long. (limit: 16)");
 		}
 
 		if (isAllDay) {
@@ -99,25 +99,25 @@ public class Calendar {
 			start_time = LocalDateTime.of(start[0], start[1], start[2], start[3], start[4], 0, 0);
 			end_time = LocalDateTime.of(end[0], end[1], end[2], end[3], end[4], 0, 0);
 			if(start_time.isEqual(end_time)) {
-				throw new SameTimeException();
+				throw new SameTimeException("Start and end times cannot be same.");
 			}
 			if(start_time.isAfter(end_time)) {
-				throw new StartTimeAfterEndTimeException();
+				throw new StartTimeAfterEndTimeException("Start time must be earlier than end time.");
 			}
 			switch (repeat) {
 				case 1:
 					if (ChronoUnit.YEARS.between(start_time, end_time) >= 1) {
-						throw new NotRepeatableException();
+						throw new NotRepeatableException("It cannot be repeated.");
 					}
 					break;
 				case 2:
 					if (ChronoUnit.MONTHS.between(start_time, end_time) >= 1) {
-						throw new NotRepeatableException();
+						throw new NotRepeatableException("It cannot be repeated.");
 					}
 					break;
 				case 3:
 					if (ChronoUnit.WEEKS.between(start_time, end_time) >= 1) {
-						throw new NotRepeatableException();
+						throw new NotRepeatableException("It cannot be repeated.");
 					}
 					break;
 			}
@@ -129,7 +129,7 @@ public class Calendar {
 				NormalSchedule temp = (NormalSchedule) s;
 
 				if(name.equals(temp.getName())) {
-					throw new AlreadyDefinedException();
+					throw new AlreadyDefinedException("Schedule names cannot be duplicated.");
 				}
 				
 				if(temp.getCanBeOverlapped() && overlap) {
@@ -137,17 +137,17 @@ public class Calendar {
 				}
 
 				if(start_time.equals(temp.getStartTime()) || end_time.equals(temp.getEndTime())) {
-					throw new TimeAlreadyFullException();
+					throw new TimeAlreadyFullException("There is already another schedule at that time.");
 				}
 	
 				if(temp.getStartTime().isAfter(start_time)) {
 					if(end_time.isAfter(temp.getStartTime())) {
-						throw new TimeAlreadyFullException();
+						throw new TimeAlreadyFullException("There is already another schedule at that time.");
 					}
 				}
 				else {
 					if(temp.getEndTime().isAfter(start_time)) {
-						throw new TimeAlreadyFullException();
+						throw new TimeAlreadyFullException("There is already another schedule at that time.");
 					}
 				}
 			}
@@ -165,7 +165,7 @@ public class Calendar {
 	 */
 	public Schedule get_Schedule(String name) {
 		if (name == null) {
-			throw new NoNameEnteredException();
+			throw new NoNameEnteredException("No name entered.");
 		}
 
 		Iterator<Schedule> iter = schedules.iterator();
@@ -176,7 +176,7 @@ public class Calendar {
 			}
 		}
 
-		throw new NoNameMatchException();
+		throw new NoNameMatchException("The schedule with that name does not exist.");
 	}
 
 
@@ -188,7 +188,7 @@ public class Calendar {
 	 */
 	public void remove_schedule(String name) {
 		if (name == null) {
-			throw new NoNameEnteredException();
+			throw new NoNameEnteredException("No name entered.");
 		}
 
 		Iterator<Schedule> iter = schedules.iterator();
@@ -200,7 +200,7 @@ public class Calendar {
 			}
 		}
 
-		throw new NoNameMatchException();
+		throw new NoNameMatchException("The schedule with that name does not exist.");
 	}
 
 	/**
@@ -216,7 +216,7 @@ public class Calendar {
 	public void modify_schedule(String name, String new_name, int[] start, int[] end, boolean isImp, boolean overlap,
 			String memo, int repeat, boolean isAllDay, Color color) {
 		if (new_name == null) {
-			throw new NoNameEnteredException();
+			throw new NoNameEnteredException("No name entered.");
 		}
 
 		remove_schedule(name);
