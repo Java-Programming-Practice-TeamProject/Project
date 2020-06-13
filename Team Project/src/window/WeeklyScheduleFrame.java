@@ -109,8 +109,6 @@ public class WeeklyScheduleFrame extends JFrame {
 		dates_constraints = new GridBagConstraints[8];
 		for(int i=0;i<7;i++) {
 			panel_dates[i] = new JPanel();
-			if(i%2==0)
-				panel_dates[i].setBackground(Color.yellow);
 			dates_constraints[i] = new GridBagConstraints();
 			dates_constraints[i].gridx = i*6+1;
 			dates_constraints[i].gridy = 0;
