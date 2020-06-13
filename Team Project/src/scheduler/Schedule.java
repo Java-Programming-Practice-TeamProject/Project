@@ -7,12 +7,6 @@ public class Schedule {
     protected boolean isImportant;
     protected String memo;
     protected Color color;
-    /** 
-     * 0. 諛섎났X
-     * 1. 留ㅻ뀈 X�썡 Y�씪
-     * 2. 留ㅼ썡 X�씪
-     * 3. 留ㅼ＜ X�슂�씪
-    */
     protected int repeatType;             
 
     /**
@@ -76,7 +70,7 @@ public class Schedule {
      * getter of color
      * @return color of calendar
      */
-    public Color getcolor() {
+    public Color getColor() {
         return color;
     }
 
@@ -87,11 +81,13 @@ public class Schedule {
      * @param isImp     is important or not
      * @param m         memo about schedule
      * @param repeat    repeat type
+     * @param c         color
      */
-    public void modify_schedule(String n, boolean isImp, String m, int repeat) {
+    public void modify_schedule(String n, boolean isImp, String m, int repeat, Color c) {
         name = n;
         isImportant = isImp;
         memo = m;
         repeatType = repeat;
+        color = c;
     }
 }

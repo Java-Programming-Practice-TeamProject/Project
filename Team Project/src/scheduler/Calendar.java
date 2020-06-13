@@ -56,6 +56,10 @@ public class Calendar {
 		this.name = name;
 	}
 
+	/**
+	 * get names of schedules
+	 * @return names of schedules
+	 */
 	public String[] get_name() {
     	ArrayList<String> name = new ArrayList<>();
     	for (Schedule s : schedules) {
@@ -68,12 +72,12 @@ public class Calendar {
      * add new schedule
 	 * time[year, month, date, hour, minute]
      * @param   all variables in class Schedule
-     * @exception AlreadyDefinedException			�씠誘� 媛숈� �씠由꾩쓽 �씪�젙�씠 議댁옱�븷 �븣
-	 * @exception TooLongNameEnteredException		�씠由꾩씠 �꼫臾� 湲� �븣
-     * @exception NoNameEnteredException			�씠由꾩씠 �엯�젰�릺吏� �븡�븯�쓣 �븣
-     * @exception TimeAlreadyFullException		   	�씠誘� 洹� �떆媛꾩뿉 �씪�젙�씠 議댁옱�븷 �븣
-     * @exception StartTimeAfterEndTimeException	�떆�옉 �떆媛꾩씠 �걹�굹�뒗 �떆媛꾨낫�떎 �뒭�쓣 �븣
-	 * @exception NotRepeatableException		 	�씪�젙�씠 諛섎났 媛꾧꺽蹂대떎 湲� �븣
+     * @exception AlreadyDefinedException			
+	 * @exception TooLongNameEnteredException		
+     * @exception NoNameEnteredException			
+     * @exception TimeAlreadyFullException		   
+     * @exception StartTimeAfterEndTimeException	
+	 * @exception NotRepeatableException		 	
      */
     public void add_schedule(String name, int[] start, int[] end, boolean isImp, boolean overlap, String memo, int repeat, boolean isAllDay, Color color) {
 		LocalDateTime start_time, end_time;
@@ -151,13 +155,36 @@ public class Calendar {
 		}
 
     	schedules.add(new_schedule);
-    }
+	}
+	
+	/**
+	 * get schedule
+	 * @param name name of schedule to delete
+	 * @exception NoNameEnteredException 
+	 * @exception NoNameMatchException   
+	 */
+	public Schedule get_Schedule(String name) {
+		if (name == null) {
+			throw new NoNameEnteredException();
+		}
+
+		Iterator<Schedule> iter = schedules.iterator();
+		while (iter.hasNext()) {
+			Schedule s = iter.next();
+			if (name.equals(s.getName())) {
+				return s;
+			}
+		}
+
+		throw new NoNameMatchException();
+	}
+
 
 	/**
 	 * delete schedule
 	 * @param name name of schedule to delete
-	 * @exception NoNameEnteredException �씠由꾩씠 �엯�젰�릺吏� �븡�븯�쓣 �븣
-	 * @exception NoNameMatchException   �엯�젰�맂 �씠由꾩쓣 媛�吏� schedule�씠 �뾾�쓣 �븣
+	 * @exception NoNameEnteredException 
+	 * @exception NoNameMatchException   
 	 */
 	public void remove_schedule(String name) {
 		if (name == null) {
@@ -179,12 +206,12 @@ public class Calendar {
 	/**
 	 * change details of schedule
 	 * @param all variables in class Schedule & new name of schedule
-	 * @exception NoNameEnteredException        	�씠由꾩씠 �엯�젰�릺吏� �븡�븯�쓣 �븣
-	 * @exception AlreadyDefinedException        	�씠誘� 媛숈� �씠由꾩쓽 �씪�젙�씠 議댁옱�븷 �븣
-	 * @exception TimeAlreadyFullException       	�씠誘� 洹� �떆媛꾩뿉 �씪�젙�씠 議댁옱�븷 �븣
-	 * @exception StartTimeAfterEndTimeException 	�떆�옉 �떆媛꾩씠 �걹�굹�뒗 �떆媛꾨낫�떎 �뒭�쓣 �븣
-	 * @exception NoNameMatchException           	�엯�젰�맂 �씠由꾩쓣 媛�吏� schedule�씠 �뾾�쓣 �븣
-	 * @exception NotRepeatableException		 	�씪�젙�씠 諛섎났 媛꾧꺽蹂대떎 湲� �븣
+	 * @exception NoNameEnteredException        	
+	 * @exception AlreadyDefinedException        
+	 * @exception TimeAlreadyFullException       	
+	 * @exception StartTimeAfterEndTimeException 	
+	 * @exception NoNameMatchException           	
+	 * @exception NotRepeatableException		 
 	 */
 	public void modify_schedule(String name, String new_name, int[] start, int[] end, boolean isImp, boolean overlap,
 			String memo, int repeat, boolean isAllDay, Color color) {
@@ -193,35 +220,13 @@ public class Calendar {
 		}
 
 		remove_schedule(name);
-		add_schedule(new_name, start, end, isImp, overlap, memo, repeat, isAllDay,color);
-	}
-
-	/**
-	 * get schedule
-	 * @param name name of schedule to delete
-	 * @exception NoNameEnteredException 이름이 입력되지 않았을 때
-	 * @exception NoNameMatchException   입력된 이름을 가진 schedule이 없을 때
-	 */
-	public Schedule get_Schedule(String name) {
-		if (name == null) {
-			throw new NoNameEnteredException();
-		}
-
-		Iterator<Schedule> iter = schedules.iterator();
-		while (iter.hasNext()) {
-			Schedule s = iter.next();
-			if (name.equals(s.getName())) {
-				return s;
-			}
-		}
-
-		throw new NoNameMatchException();
+		add_schedule(new_name, start, end, isImp, overlap, memo, repeat, isAllDay, color);
 	}
 
 	/**
 	 * read schedule from arraylist 'schedules' on specific date
-	 * @param today		specific date
-	 * @return			schedules on specific date
+	 * @param today	
+	 * @return			
 	 */
 	public ArrayList<Schedule> read_schedule(LocalDate today) {
 		ArrayList<Schedule> schedule_of_day = new ArrayList<>();

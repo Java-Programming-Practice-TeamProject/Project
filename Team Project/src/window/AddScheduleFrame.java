@@ -1,18 +1,25 @@
 package window;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import javax.swing.*;
-import javax.swing.GroupLayout.*;
-import javax.swing.LayoutStyle.*;
-import javax.swing.event.*;
-
-import scheduler.FullDaySchedule;
-import scheduler.NormalSchedule;
-import scheduler.Schedule;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class AddScheduleFrame extends JFrame {
 	/**

@@ -5,14 +5,18 @@ import java.net.*;
 import java.util.*;
 
 public class Server {
-	ArrayList<Thread> threads;
-	HashMap<String, DataOutputStream> clients;
-	ServerSocket ss;
+	private ArrayList<Thread> threads;
+	private HashMap<String, DataOutputStream> clients;
+	private ServerSocket ss;
 
+	/* start server */
 	public static void main(String[] args) {
 		new Server();
 	}
 
+	/**
+	 * ctor of Server
+	 */
 	public Server() {
 		threads = new ArrayList<Thread>();
 		clients = new HashMap<String, DataOutputStream>();
@@ -73,7 +77,7 @@ public class Server {
 	}
 
 	public synchronized void sendFDSchedule(String to_send, String name, Boolean isImp, String memo, int RepeatType,
-			boolean isFullDay, int[] start) throws Exception {
+			boolean isFullDay, int[] start, int color) throws Exception {
 		Iterator<String> it = clients.keySet().iterator();
 		while (it.hasNext()) {
 			String client_name = it.next();
@@ -83,6 +87,7 @@ public class Server {
 				clients.get(client_name).writeBoolean(isImp);
 				clients.get(client_name).writeUTF(memo);
 				clients.get(client_name).writeInt(RepeatType);
+				clients.get(client_name).writeInt(color);
 				clients.get(client_name).writeBoolean(true);
 				clients.get(client_name).flush();
 				for (int i = 0; i < 3; i++) {
@@ -94,7 +99,7 @@ public class Server {
 	}
 
 	public synchronized void sendNormSchedule(String to_send, String name, Boolean isImp, String memo, int RepeatType,
-			boolean isFullDay, int[] start, int[] end, boolean canBeOverlapped) throws Exception {
+			boolean isFullDay, int[] start, int[] end, boolean canBeOverlapped, int color) throws Exception {
 		Iterator<String> it = clients.keySet().iterator();
 		while (it.hasNext()) {
 			String client_name = it.next();
@@ -104,6 +109,7 @@ public class Server {
 				clients.get(client_name).writeBoolean(isImp);
 				clients.get(client_name).writeUTF(memo);
 				clients.get(client_name).writeInt(RepeatType);
+				clients.get(client_name).writeInt(color);
 				clients.get(client_name).writeBoolean(false);
 				clients.get(client_name).flush();
 				for (int i = 0; i < 5; i++) {
@@ -152,13 +158,14 @@ public class Server {
 					Boolean isImp = dis.readBoolean();
 					String memo = dis.readUTF();
 					int RepeatType = dis.readInt();
+					int colorRGB = dis.readInt();
 					boolean isFullDay = dis.readBoolean();
 					if (isFullDay) {
 						int[] start = new int[3];
 						for (int i = 0; i < 3; i++) {
 							start[i] = dis.readInt();
 						}
-						sendFDSchedule(to_send, name, isImp, memo, RepeatType, isFullDay, start);
+						sendFDSchedule(to_send, name, isImp, memo, RepeatType, isFullDay, start, colorRGB);
 					} else {
 						int[] start = new int[5];
 						int[] end = new int[5];
@@ -167,7 +174,7 @@ public class Server {
 							end[i] = dis.readInt();
 						}
 						boolean canBeOverlapped = dis.readBoolean();
-						sendNormSchedule(to_send, name, isImp, memo, RepeatType, isFullDay, start, end, canBeOverlapped);
+						sendNormSchedule(to_send, name, isImp, memo, RepeatType, isFullDay, start, end, canBeOverlapped, colorRGB);
 						}
 					}
 				} catch (Exception e) {

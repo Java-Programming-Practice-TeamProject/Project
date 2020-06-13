@@ -1,11 +1,24 @@
 package window;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-
-import scheduler.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import scheduler.FullDaySchedule;
+import scheduler.NormalSchedule;
+import scheduler.Schedule;
 
 public class ShowScheduleFrame extends JFrame {
 	/**
@@ -18,7 +31,7 @@ public class ShowScheduleFrame extends JFrame {
 	private JTextField CalendarField;
 	private JTextField RepeatField;
 	private JTextField MemoField;
-	JCheckBox OverlapCheckBox, ImportantCheckBox, FullDayCheckBox;
+	private JCheckBox OverlapCheckBox, ImportantCheckBox, FullDayCheckBox;
 	private ArrayList<Schedule> schedules;
 	private int index;
 	private String name;
@@ -271,8 +284,6 @@ public class ShowScheduleFrame extends JFrame {
 		gbc_MemoField.gridy = 8;
 		SchedulePanel.add(MemoField, gbc_MemoField);
 		MemoField.setColumns(10);
-		
-		//Collections.sort(this.schedules, new ScheduleComparator());	
 
 		pack();
 		loadSchedules();

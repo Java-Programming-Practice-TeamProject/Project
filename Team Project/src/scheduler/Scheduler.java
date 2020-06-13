@@ -29,7 +29,7 @@ public class Scheduler {
     /**
      * get calendar
      * @param name  name of calendar to get
-     * @exception NoNameMatchException          �엯�젰�맂 �씠由꾩쓣 媛�吏� calendar媛� �뾾�쓣 �븣
+     * @exception NoNameMatchException          
      */
     public Calendar get_calendar(String name) {
     	for (Calendar c : calendars) {
@@ -44,8 +44,8 @@ public class Scheduler {
     /**
      * make new calendar
      * @param name  name of new calendar  
-     * @exception AlreadyDefinedException   �씠誘� 媛숈� �씠由꾩쓽 calendar媛� 議댁옱�븷 �븣
-     * @exception NoNameEnteredException    �씠由꾩씠 �엯�젰�릺吏� �븡�븯�쓣 �븣
+     * @exception AlreadyDefinedException   
+     * @exception NoNameEnteredException    
      */
     public void add_calendar(String name, Color color) {
         if (name.length() == 0 || name == null) {
@@ -65,9 +65,9 @@ public class Scheduler {
     /**
      * remove calendar
      * @param name  name of calendar to delete
-     * @exception NoNameEnteredException        �씠由꾩씠 �엯�젰�릺吏� �븡�븯�쓣 �븣
-     * @exception NoNameMatchException          �엯�젰�맂 �씠由꾩쓣 媛�吏� calendar媛� �뾾�쓣 �븣
-     * @exception LastCalendarException         calendar媛� �븯�굹 �궓�븘 �엳�쓣 �븣
+     * @exception NoNameEnteredException        
+     * @exception NoNameMatchException          
+     * @exception LastCalendarException         
      */
     public void remove_calendar(String name) {
         if (name.length() == 0 || name == null) {
@@ -94,20 +94,16 @@ public class Scheduler {
      * change name of calendar
      * @param old_name  old name of calendar
      * @param new_name  new name of calendar
-     * @exception NoNameMatchException                  old_name�쓣 媛�吏� calendar媛� �뾾�쓣 �븣
-     * @exception NoNameEnteredException                old_name�씠�굹 new_name�씠 �엯�젰�릺吏� �븡�븯�쓣 �븣
-     * @exception AlreadyDefinedException   			�씠誘� 媛숈� �씠由꾩쓽 calendar媛� 議댁옱�븷 �븣
-     * @exception EmptyCalendarException                calendar媛� 鍮꾩뼱 �엳�쓣 �븣
+     * @exception NoNameMatchException                 
+     * @exception NoNameEnteredException             
+     * @exception AlreadyDefinedException   		
+     * @exception EmptyCalendarException             
      */
     public void modify_calendar(String old_name, String new_name) {
         if (old_name.length() == 0 || old_name == null || new_name.length() == 0 || new_name == null) {
             throw new NoNameEnteredException();
         }
-        /*
-        if (calendars.isEmpty()) {
-            throw new EmptyCalendarException();
-        }
-        */
+        
         for (Calendar c : calendars) {
             if (new_name.equals(c.getName())) {
                 throw new AlreadyDefinedException();

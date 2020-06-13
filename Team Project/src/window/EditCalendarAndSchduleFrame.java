@@ -1,8 +1,17 @@
 package window;
 
-import exception.*;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import exception.BothFieldEnteredException;
+
 public class EditCalendarAndSchduleFrame extends JFrame {
 
 	/**
@@ -11,7 +20,7 @@ public class EditCalendarAndSchduleFrame extends JFrame {
 	private static final long serialVersionUID = -2838724568182074884L;
 	private JTextField AddCalendarField, DeleteCalendarField;
 	private JButton AddScheduleButton, SubmitButton;
-	private JComboBox colorcomboBox;
+	private JComboBox<String> colorcomboBox;
 
 	public JButton getAddScheduleButton() {
 		return AddScheduleButton;
@@ -71,7 +80,7 @@ public class EditCalendarAndSchduleFrame extends JFrame {
 		AddCalendarField.setColumns(10);
 		
 		String colors[] = {"Magenta","Pink","Red","Orange", "Yellow", "Green","Cyan", "Blue","Light Gray","Gray","Dark Gray"};
-		colorcomboBox = new JComboBox(colors);
+		colorcomboBox = new JComboBox<String>(colors);
 		panel_8.add(colorcomboBox);
 		
 		JPanel panel_3 = new JPanel();

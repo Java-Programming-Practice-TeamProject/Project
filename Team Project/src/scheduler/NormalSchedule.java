@@ -28,8 +28,8 @@ public class NormalSchedule extends Schedule {
      * @param start     start time of schedule
      * @param end       end time of schedule
      */
-    public NormalSchedule(String n, boolean isImp, boolean overlap, String m, int repeat, LocalDateTime start, LocalDateTime end,Color c) {
-        super(n, isImp, m, repeat,c);
+    public NormalSchedule(String n, boolean isImp, boolean overlap, String m, int repeat, LocalDateTime start, LocalDateTime end, Color c) {
+        super(n, isImp, m, repeat, c);
         start_time = start;
         end_time = end;
         canBeOverlapped = overlap;
@@ -69,8 +69,8 @@ public class NormalSchedule extends Schedule {
      * @param start     start time of Schedule
      * @param end       end time of Schedule
      */
-    public void modify_schedule(String n, boolean isImp, boolean overlap, String m, int repeat, LocalDateTime start, LocalDateTime end) {
-        super.modify_schedule(n, isImp, m, repeat);
+    public void modify_schedule(String n, boolean isImp, boolean overlap, String m, int repeat, LocalDateTime start, LocalDateTime end, Color c) {
+        super.modify_schedule(n, isImp, m, repeat, c);
         canBeOverlapped = overlap; 
         start_time = start;
         end_time = end;

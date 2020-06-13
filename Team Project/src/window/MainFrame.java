@@ -1,39 +1,61 @@
 package window;
 
-import scheduler.*;
-import exception.AlreadyDefinedException;
-import exception.NoNameEnteredException;
-
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-
-import javax.swing.*;
-import javax.swing.event.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import exception.AlreadyDefinedException;
+import exception.NoNameEnteredException;
+import scheduler.Calendar;
+import scheduler.FullDaySchedule;
+import scheduler.NormalSchedule;
+import scheduler.Schedule;
+import scheduler.Scheduler;
+
 
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 26869752226168311L;
 
-	Scheduler scheduler = new Scheduler();
-	JComboBox<String> calendarComboBox;
-	JSpinner yearSpinner, monthSpinner;
-	ArrayList<JButton> DayOfWeekButton = new ArrayList<>();
-	ArrayList<JButton> WeekButton = new ArrayList<>();
-	ArrayList<JButton> DayButton = new ArrayList<>();
+	private Scheduler scheduler = new Scheduler();
+	private Color[] colors = {Color.MAGENTA, Color.PINK,  Color.RED, Color.ORANGE,  Color.YELLOW, Color.GREEN,  Color.CYAN, Color.BLUE ,  Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY, Color.LIGHT_GRAY};
+	private JComboBox<String> calendarComboBox;
+	private JSpinner yearSpinner, monthSpinner;
+	private ArrayList<JButton> WeekButton = new ArrayList<>();
+	private ArrayList<JButton> DayButton = new ArrayList<>();
 	private String name = "";
-	Socket socket;
-	Sender sender;
-	ReceiveThread receive;
-	String[] user_names;
+	private Socket socket;
+	private Sender sender;
+	private ReceiveThread receive;
+	private String[] user_names;
+	
 
 	public static void main(String[] args) {
 		try {
@@ -50,6 +72,7 @@ public class MainFrame extends JFrame {
 		}
 
 		getContentPane().setLayout(new BorderLayout(0, 20));
+		setTitle("Calendar");
 
 		JPanel ButtonPanel = new JPanel();
 		getContentPane().add(ButtonPanel, BorderLayout.NORTH);
@@ -78,7 +101,7 @@ public class MainFrame extends JFrame {
 		SpinnerModel yearModel = new SpinnerNumberModel(today.getYear(), null, null, 1);
 		yearSpinner = new JSpinner(yearModel);
 		yearSpinner.setEditor(new JSpinner.NumberEditor(yearSpinner, "####"));
-		yearSpinner.setFont(new Font("援대┝", Font.PLAIN, 30));
+		yearSpinner.setFont(new Font("굴림", Font.PLAIN, 30));
 		JSpinner.DefaultEditor yearSpinnerEditor = (JSpinner.DefaultEditor) yearSpinner.getEditor();
 		yearSpinnerEditor.getTextField().setHorizontalAlignment(JTextField.CENTER);
 		yearSpinnerEditor.getTextField().setEditable(false);
@@ -97,7 +120,7 @@ public class MainFrame extends JFrame {
 		SpinnerModel monthModel = new SpinnerNumberModel(today.getMonthValue(), 1, 12, 1);
 		monthSpinner = new JSpinner(monthModel);
 		monthSpinner.setEditor(new JSpinner.NumberEditor(monthSpinner, "00"));
-		monthSpinner.setFont(new Font("援대┝", Font.PLAIN, 30));
+		monthSpinner.setFont(new Font("굴림", Font.PLAIN, 30));
 		JSpinner.DefaultEditor monthSpinnerEditor = (JSpinner.DefaultEditor) monthSpinner.getEditor();
 		monthSpinnerEditor.getTextField().setHorizontalAlignment(JTextField.CENTER);
 		monthSpinnerEditor.getTextField().setEditable(false);
@@ -121,13 +144,7 @@ public class MainFrame extends JFrame {
 		gbc_ShareButton.gridy = 2;
 		ButtonPanel.add(ShareButton, gbc_ShareButton);
 		ShareButton.addActionListener(new ShareButtonClickListener());
-		/*
-		 * JButton ChatButton = new JButton("Chat"); GridBagConstraints gbc_ChatButton =
-		 * new GridBagConstraints(); gbc_ChatButton.fill =
-		 * GridBagConstraints.HORIZONTAL; gbc_ChatButton.insets = new Insets(0, 0, 0,
-		 * 5); gbc_ChatButton.gridx = 4; gbc_ChatButton.gridy = 2;
-		 * ButtonPanel.add(ChatButton, gbc_ChatButton);
-		 */
+
 		JButton AddButton = new JButton("Add");
 		GridBagConstraints gbc_AddButton = new GridBagConstraints();
 		gbc_AddButton.insets = new Insets(0, 0, 0, 5);
@@ -147,7 +164,6 @@ public class MainFrame extends JFrame {
 		CalendarPanel.setLayout(gbl_CalendarPanel);
 
 		String[] Day = { "Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat" };
-		// String Day = "�씪�썡�솕�닔紐⑷툑�넗";
 		for (int i = 0; i < 7; i++) {
 			JLabel Label = new JLabel(Day[i]);
 			GridBagConstraints gbc = new GridBagConstraints();
@@ -157,8 +173,6 @@ public class MainFrame extends JFrame {
 			gbc.gridy = 0;
 			Label.setHorizontalAlignment(JLabel.CENTER);
 			Label.setVerticalAlignment(JLabel.CENTER);
-			// Button.addActionListener(new DayOfWeekButtonClickListener());
-			// DayOfWeekButton.add(Button);
 			CalendarPanel.add(Label, gbc);
 		}
 
@@ -202,7 +216,7 @@ public class MainFrame extends JFrame {
 		}
 
 		JLabel NameLabel = new JLabel("User: " + name);
-		NameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		NameLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		NameLabel.setFont(new Font("굴림", Font.PLAIN, 16));
 		GridBagConstraints gbc_NameLabel = new GridBagConstraints();
 		gbc_NameLabel.insets = new Insets(0, 0, 5, 5);
@@ -331,43 +345,13 @@ public class MainFrame extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						String[] textField = ecsf.getTextField();
+						int selected_col = Integer.parseInt(textField[2]);
 						Color calcolor;
-						switch (Integer.parseInt(textField[2])) {
-							case 0:
-								calcolor = Color.MAGENTA;
-								break;
-							case 1:
-								calcolor = Color.PINK;
-								break;
-							case 2:
-								calcolor = Color.RED;
-								break;
-							case 3:
-								calcolor = Color.ORANGE;
-								break;
-							case 4:
-								calcolor = Color.YELLOW;
-								break;
-							case 5:
-								calcolor = Color.GREEN;
-								break;
-							case 6:
-								calcolor = Color.CYAN;
-								break;
-							case 7:
-								calcolor = Color.BLUE;
-								break;
-							case 8:
-								calcolor = Color.LIGHT_GRAY;
-								break;
-							case 9:
-								calcolor = Color.GRAY;
-								break;
-							case 10:
-								calcolor = Color.DARK_GRAY;
-								break;
-							default:
-								calcolor = Color.LIGHT_GRAY;
+						if (0 <= selected_col && selected_col <= 10) {
+							calcolor = colors[selected_col];
+						}
+						else {
+							calcolor = colors[11];
 						}
 						if (textField[0].length() != 0 && textField[1].length() == 0) {
 							scheduler.add_calendar(textField[0],calcolor);
@@ -497,6 +481,8 @@ public class MainFrame extends JFrame {
 				dos.writeBoolean(s.getIsImportant());
 				dos.writeUTF(s.getMemo());
 				dos.writeInt(s.getRepeatType());
+				dos.writeInt(s.getColor().getRGB());
+				
 				dos.flush();
 				if (s instanceof FullDaySchedule) {
 					LocalDate time = ((FullDaySchedule) s).getTime();
@@ -534,6 +520,7 @@ public class MainFrame extends JFrame {
 		int RepeatType;
 		boolean isFullDay;
 		int[] start, end;
+		Color color;
 		boolean canBeOverlapped;
 
 		public ReceiveThread() {
@@ -560,6 +547,7 @@ public class MainFrame extends JFrame {
 						isImp = dis.readBoolean();
 						memo = dis.readUTF();
 						RepeatType = dis.readInt();
+						color = new Color(dis.readInt());
 						isFullDay = dis.readBoolean();
 						if (isFullDay) {
 							start = new int[3];
@@ -582,9 +570,9 @@ public class MainFrame extends JFrame {
 								String selected_name = rf.getCalComboBox();
 								Calendar cal = scheduler.get_calendar(selected_name);
 								if (isFullDay) {
-									cal.add_schedule(name, start, start, isImp, true, memo, RepeatType, true);
+									cal.add_schedule(name, start, start, isImp, true, memo, RepeatType, true, color);
 								} else {
-									cal.add_schedule(name, start, end, isImp, canBeOverlapped, memo, RepeatType, false);
+									cal.add_schedule(name, start, end, isImp, canBeOverlapped, memo, RepeatType, false, color);
 								}
 								rf.setVisible(false);
 								rf.dispose();
@@ -601,5 +589,4 @@ public class MainFrame extends JFrame {
 			System.out.println("receive off");
 		}
 	}
-
 }

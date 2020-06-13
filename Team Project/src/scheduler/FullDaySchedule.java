@@ -44,8 +44,8 @@ public class FullDaySchedule extends Schedule{
      * @param repeat    repeat type
      * @param t         time of Schedule
      */
-    public void modify_schedule(String n, boolean isImp, String m, int repeat, LocalDate t) {
-        super.modify_schedule(n, isImp, m, repeat);
+    public void modify_schedule(String n, boolean isImp, String m, int repeat, LocalDate t, Color c) {
+        super.modify_schedule(n, isImp, m, repeat, c);
         time = t;
     }
 }

@@ -1,10 +1,21 @@
 package window;
 
-import scheduler.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import comm.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import scheduler.Calendar;
+import scheduler.Scheduler;
 
 public class ShareFrame extends JFrame {
 

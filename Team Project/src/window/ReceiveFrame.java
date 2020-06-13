@@ -1,16 +1,14 @@
 package window;
 
-import javax.swing.JFrame;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.awt.Font;
 
 public class ReceiveFrame extends JFrame {
 	/**
@@ -18,7 +16,7 @@ public class ReceiveFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = -2108844096560396184L;
 	private JButton AddBtn, CancelBtn;
-	JComboBox<String> CalComboBox;
+	private JComboBox<String> CalComboBox;
 	
 	public JButton getAddBtn() {
 		return AddBtn;

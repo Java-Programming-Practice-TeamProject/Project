@@ -1,32 +1,41 @@
 package window;
 
-import java.util.ArrayList;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import scheduler.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.time.LocalDateTime;
-
-/*
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import net.miginfocom.swing.MigLayout;*/
+import java.util.ArrayList;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.ScrollPaneConstants;
+import scheduler.FullDaySchedule;
+import scheduler.NormalSchedule;
+import scheduler.Schedule;
 
 public class WeeklyScheduleFrame extends JFrame {
 
-	JPanel panel;
-	JPanel panel_1 = new JPanel();
-	JPanel panel_3;
-	JScrollPane scrollPane;
-	JPanel panel_4;
-	GridBagLayout gbl_panel_4;
-	GridBagConstraints first_gridbag;
-	JPanel first_panel;
-	JPanel[] panel_times;
-	GridBagConstraints[] times_constraints;
-	JPanel[] panel_dates;
-	GridBagConstraints[] dates_constraints; 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -113556207287252627L;
+	private JPanel panel;
+	private JPanel panel_1 = new JPanel();
+	private JPanel panel_3;
+	private JScrollPane scrollPane;
+	private JPanel panel_4;
+	private GridBagLayout gbl_panel_4;
+	private GridBagConstraints first_gridbag;
+	private JPanel first_panel;
+	private JPanel[] panel_times;
+	private GridBagConstraints[] times_constraints;
+	private JPanel[] panel_dates;
+	private GridBagConstraints[] dates_constraints; 
 	
 	public WeeklyScheduleFrame(ArrayList<ArrayList<Schedule>> schedule){
 		setVisible(true);
@@ -143,7 +152,7 @@ public class WeeklyScheduleFrame extends JFrame {
 			int[][] overlap = new int[96][100];
 			for(Schedule s : schedule.get(i)) {
 				if(s instanceof FullDaySchedule) {
-					showweeklyalldayschedule(panel,s.getName(),i,s.getcolor(), alldayorder++);
+					showweeklyalldayschedule(panel,s.getName(),i,s.getColor(), alldayorder++);
 				}else {
 					NormalSchedule ns = (NormalSchedule) s;
 					LocalDateTime starttime = ns.getStartTime();
@@ -204,7 +213,7 @@ public class WeeklyScheduleFrame extends JFrame {
 					}
 				}
 				
-				showweeklyschedule(panel,s.getName(),i,intstarttime, intendtime, s.getcolor(), num, order[orderindex++], maxnumofallday);
+				showweeklyschedule(panel,s.getName(),i,intstarttime, intendtime, s.getColor(), num, order[orderindex++], maxnumofallday);
 			}
 		}
 	}
