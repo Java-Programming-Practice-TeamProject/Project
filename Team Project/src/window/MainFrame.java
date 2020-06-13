@@ -101,7 +101,7 @@ public class MainFrame extends JFrame {
 		SpinnerModel yearModel = new SpinnerNumberModel(today.getYear(), null, null, 1);
 		yearSpinner = new JSpinner(yearModel);
 		yearSpinner.setEditor(new JSpinner.NumberEditor(yearSpinner, "####"));
-		yearSpinner.setFont(new Font("굴림", Font.PLAIN, 30));
+		yearSpinner.setFont(new Font(null, Font.PLAIN, 30));
 		JSpinner.DefaultEditor yearSpinnerEditor = (JSpinner.DefaultEditor) yearSpinner.getEditor();
 		yearSpinnerEditor.getTextField().setHorizontalAlignment(JTextField.CENTER);
 		yearSpinnerEditor.getTextField().setEditable(false);
@@ -120,7 +120,7 @@ public class MainFrame extends JFrame {
 		SpinnerModel monthModel = new SpinnerNumberModel(today.getMonthValue(), 1, 12, 1);
 		monthSpinner = new JSpinner(monthModel);
 		monthSpinner.setEditor(new JSpinner.NumberEditor(monthSpinner, "00"));
-		monthSpinner.setFont(new Font("굴림", Font.PLAIN, 30));
+		monthSpinner.setFont(new Font(null, Font.PLAIN, 30));
 		JSpinner.DefaultEditor monthSpinnerEditor = (JSpinner.DefaultEditor) monthSpinner.getEditor();
 		monthSpinnerEditor.getTextField().setHorizontalAlignment(JTextField.CENTER);
 		monthSpinnerEditor.getTextField().setEditable(false);
@@ -217,7 +217,7 @@ public class MainFrame extends JFrame {
 
 		JLabel NameLabel = new JLabel("User: " + name);
 		NameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		NameLabel.setFont(new Font("굴림", Font.PLAIN, 16));
+		NameLabel.setFont(new Font(null, Font.PLAIN, 16));
 		GridBagConstraints gbc_NameLabel = new GridBagConstraints();
 		gbc_NameLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_NameLabel.gridx = 1;

@@ -237,7 +237,7 @@ public class WeeklyScheduleFrame extends JFrame {
 		}
 		name = "<html>"+name+"</html>";
 		JLabel temp = new JLabel(name);
-		temp.setFont(new Font("굴림",Font.PLAIN, 9));
+		temp.setFont(new Font(null,Font.PLAIN, 9));
 		paneltemp.add(temp);
 		panel.add(paneltemp,gridbagtemp);
 		
@@ -262,7 +262,7 @@ public class WeeklyScheduleFrame extends JFrame {
 		gridbagtemp.gridwidth = 6;
 		
 		JLabel temp = new JLabel(name);
-		temp.setFont(new Font("굴림",Font.PLAIN, 9));
+		temp.setFont(new Font(null,Font.PLAIN, 9));
 		paneltemp.add(temp);
 		panel.add(paneltemp,gridbagtemp);
 	}

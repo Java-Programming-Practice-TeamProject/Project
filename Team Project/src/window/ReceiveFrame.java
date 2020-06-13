@@ -39,7 +39,7 @@ public class ReceiveFrame extends JFrame {
 		getContentPane().setLayout(gridBagLayout);
 		
 		JLabel CalendarLbl = new JLabel("Calendar");
-		CalendarLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		CalendarLbl.setFont(new Font(null, Font.PLAIN, 18));
 		CalendarLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_CalendarLbl = new GridBagConstraints();
 		gbc_CalendarLbl.insets = new Insets(0, 0, 5, 5);
@@ -56,7 +56,7 @@ public class ReceiveFrame extends JFrame {
 		getContentPane().add(CalComboBox, gbc_CalComboBox);
 		
 		AddBtn = new JButton("Add");
-		AddBtn.setFont(new Font("굴림", Font.PLAIN, 18));
+		AddBtn.setFont(new Font(null, Font.PLAIN, 18));
 		GridBagConstraints gbc_AddBtn = new GridBagConstraints();
 		gbc_AddBtn.insets = new Insets(0, 0, 5, 0);
 		gbc_AddBtn.anchor = GridBagConstraints.WEST;

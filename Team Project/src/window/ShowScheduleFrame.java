@@ -130,7 +130,7 @@ public class ShowScheduleFrame extends JFrame {
 		SchedulePanel.setLayout(gbl_SchedulePanel);
 			
 		JLabel NameLbl = new JLabel("Name");
-		NameLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		NameLbl.setFont(new Font(null, Font.PLAIN, 18));
 		NameLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_NameLbl = new GridBagConstraints();
 		gbc_NameLbl.fill = GridBagConstraints.BOTH;
@@ -150,7 +150,7 @@ public class ShowScheduleFrame extends JFrame {
 		
 		JLabel FDLbl = new JLabel("Full Day");
 		FDLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		FDLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		FDLbl.setFont(new Font(null, Font.PLAIN, 18));
 		GridBagConstraints gbc_FDLbl = new GridBagConstraints();
 		gbc_FDLbl.fill = GridBagConstraints.BOTH;
 		gbc_FDLbl.insets = new Insets(0, 0, 5, 5);
@@ -168,7 +168,7 @@ public class ShowScheduleFrame extends JFrame {
 		
 		JLabel TimeLbl = new JLabel("Time");
 		TimeLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		TimeLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		TimeLbl.setFont(new Font(null, Font.PLAIN, 18));
 		GridBagConstraints gbc_TimeLbl = new GridBagConstraints();
 		gbc_TimeLbl.fill = GridBagConstraints.BOTH;
 		gbc_TimeLbl.insets = new Insets(0, 0, 5, 5);
@@ -196,7 +196,7 @@ public class ShowScheduleFrame extends JFrame {
 		
 		JLabel CalendarLbl = new JLabel("Calendar");
 		CalendarLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		CalendarLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		CalendarLbl.setFont(new Font(null, Font.PLAIN, 18));
 		GridBagConstraints gbc_CalendarLbl = new GridBagConstraints();
 		gbc_CalendarLbl.fill = GridBagConstraints.BOTH;
 		gbc_CalendarLbl.insets = new Insets(0, 0, 5, 5);
@@ -214,7 +214,7 @@ public class ShowScheduleFrame extends JFrame {
 		CalendarField.setColumns(10);
 		
 		JLabel OlLbl = new JLabel("Overlap");
-		OlLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		OlLbl.setFont(new Font(null, Font.PLAIN, 18));
 		OlLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_OlLbl = new GridBagConstraints();
 		gbc_OlLbl.fill = GridBagConstraints.BOTH;
@@ -232,7 +232,7 @@ public class ShowScheduleFrame extends JFrame {
 		
 		JLabel ImpLbl = new JLabel("Important");
 		ImpLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		ImpLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		ImpLbl.setFont(new Font(null, Font.PLAIN, 18));
 		GridBagConstraints gbc_ImpLbl = new GridBagConstraints();
 		gbc_ImpLbl.fill = GridBagConstraints.BOTH;
 		gbc_ImpLbl.insets = new Insets(0, 0, 5, 5);
@@ -248,7 +248,7 @@ public class ShowScheduleFrame extends JFrame {
 		SchedulePanel.add(ImportantCheckBox, gbc_ImportantCheckBox);
 		
 		JLabel RepeatLbl = new JLabel("Repeat");
-		RepeatLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		RepeatLbl.setFont(new Font(null, Font.PLAIN, 18));
 		RepeatLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_RepeatLbl = new GridBagConstraints();
 		gbc_RepeatLbl.fill = GridBagConstraints.BOTH;
@@ -268,7 +268,7 @@ public class ShowScheduleFrame extends JFrame {
 		
 		JLabel MemoLbl = new JLabel("Memo");
 		MemoLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		MemoLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		MemoLbl.setFont(new Font(null, Font.PLAIN, 18));
 		GridBagConstraints gbc_MemoLbl = new GridBagConstraints();
 		gbc_MemoLbl.fill = GridBagConstraints.BOTH;
 		gbc_MemoLbl.insets = new Insets(0, 0, 5, 5);

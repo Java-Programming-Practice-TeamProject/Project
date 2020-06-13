@@ -52,7 +52,7 @@ public class ShareFrame extends JFrame {
 		
 		JLabel UserLabel = new JLabel("User");
 		UserLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		UserLabel.setFont(new Font("굴림", Font.PLAIN, 18));
+		UserLabel.setFont(new Font(null, Font.PLAIN, 18));
 		GridBagConstraints gbc_UserLabel = new GridBagConstraints();
 		gbc_UserLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_UserLabel.gridx = 1;
@@ -70,7 +70,7 @@ public class ShareFrame extends JFrame {
 		
 		JLabel CalLabel = new JLabel("Calendar");
 		CalLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		CalLabel.setFont(new Font("굴림", Font.PLAIN, 18));
+		CalLabel.setFont(new Font(null, Font.PLAIN, 18));
 		GridBagConstraints gbc_CalLabel = new GridBagConstraints();
 		gbc_CalLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_CalLabel.gridx = 1;
@@ -98,7 +98,7 @@ public class ShareFrame extends JFrame {
 		
 		JLabel SchLabel = new JLabel("Schedule");
 		SchLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		SchLabel.setFont(new Font("굴림", Font.PLAIN, 18));
+		SchLabel.setFont(new Font(null, Font.PLAIN, 18));
 		GridBagConstraints gbc_SchLabel = new GridBagConstraints();
 		gbc_SchLabel.insets = new Insets(0, 0, 0, 5);
 		gbc_SchLabel.gridx = 1;
@@ -120,7 +120,7 @@ public class ShareFrame extends JFrame {
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		SendBtn = new JButton("Send");
-		SendBtn.setFont(new Font("굴림", Font.PLAIN, 18));
+		SendBtn.setFont(new Font(null, Font.PLAIN, 18));
 		panel_1.add(SendBtn);
 		
 		pack();
