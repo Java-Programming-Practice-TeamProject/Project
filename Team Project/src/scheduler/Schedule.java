@@ -1,14 +1,17 @@
 package scheduler;
 
+import java.awt.Color;
+
 public class Schedule {
     protected String name;
     protected boolean isImportant;
     protected String memo;
+    protected Color color;
     /** 
-     * 0. 반복X
-     * 1. 매년 X월 Y일
-     * 2. 매월 X일
-     * 3. 매주 X요일
+     * 0. 諛섎났X
+     * 1. 留ㅻ뀈 X�썡 Y�씪
+     * 2. 留ㅼ썡 X�씪
+     * 3. 留ㅼ＜ X�슂�씪
     */
     protected int repeatType;             
 
@@ -29,11 +32,12 @@ public class Schedule {
      * @param m         memo about schedule
      * @param repeat    repeat type
      */
-    public Schedule(String n, boolean isImp, String m, int repeat) {
+    public Schedule(String n, boolean isImp, String m, int repeat, Color c) {
         name = n;
         isImportant = isImp;
         memo = m;
         repeatType = repeat;
+        color = c;
     }
 
     /**
@@ -67,6 +71,15 @@ public class Schedule {
     public int getRepeatType() {
         return repeatType;
     }
+    
+    /**
+     * getter of color
+     * @return color of calendar
+     */
+    public Color getcolor() {
+        return color;
+    }
+
 
     /**
      * change value of each variable if it is not null

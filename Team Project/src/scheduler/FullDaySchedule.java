@@ -1,5 +1,6 @@
 package scheduler;
 
+import java.awt.Color;
 import java.time.LocalDate;
 
 public class FullDaySchedule extends Schedule{
@@ -22,8 +23,8 @@ public class FullDaySchedule extends Schedule{
      * @param repeat    repeat type
      * @param t         time of schedule
      */
-    public FullDaySchedule(String n, boolean isImp, String m, int repeat, LocalDate t) {
-        super(n, isImp, m, repeat);
+    public FullDaySchedule(String n, boolean isImp, String m, int repeat, LocalDate t, Color c) {
+        super(n, isImp, m, repeat,c);
         time = t;
     }
 
