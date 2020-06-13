@@ -161,7 +161,7 @@ public class WeeklyScheduleFrame extends JFrame {
 					int intendtime = endtime.getHour()*4+endtime.getMinute()%15;
 										
 					if(overlap[intstarttime][0]==0&&overlap[intendtime-1][0]==0) {
-						order[orderindex] = 0;
+						order[orderindex++] = 0;
 						for(int j=intstarttime;j<intendtime;j++) {
 							overlap[j][0]++;
 						}
@@ -177,7 +177,7 @@ public class WeeklyScheduleFrame extends JFrame {
 						for(int k=intstarttime;k<intendtime-1;k++) {
 							overlap[k][j]++;
 						}
-						order[orderindex] = j;
+						order[orderindex++] = j;
 					}
 					else if(overlap[intendtime-1][0]!=0) {
 						int j = 0;
@@ -190,7 +190,7 @@ public class WeeklyScheduleFrame extends JFrame {
 						for(int k=intstarttime;k<intendtime;k++) {
 							overlap[k][j]++;
 						}
-						order[orderindex] = j;
+						order[orderindex++] = j;
 					}
 				}
 			}
