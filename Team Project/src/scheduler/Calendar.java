@@ -56,6 +56,14 @@ public class Calendar {
 		this.name = name;
 	}
 
+	public String[] get_name() {
+    	ArrayList<String> name = new ArrayList<>();
+    	for (Schedule s : schedules) {
+    		name.add(s.getName());
+    	}
+    	return name.toArray(new String[name.size()]);
+    }
+
 	/**
      * add new schedule
 	 * time[year, month, date, hour, minute]
@@ -186,6 +194,28 @@ public class Calendar {
 
 		remove_schedule(name);
 		add_schedule(new_name, start, end, isImp, overlap, memo, repeat, isAllDay,color);
+	}
+
+	/**
+	 * get schedule
+	 * @param name name of schedule to delete
+	 * @exception NoNameEnteredException 이름이 입력되지 않았을 때
+	 * @exception NoNameMatchException   입력된 이름을 가진 schedule이 없을 때
+	 */
+	public Schedule get_Schedule(String name) {
+		if (name == null) {
+			throw new NoNameEnteredException();
+		}
+
+		Iterator<Schedule> iter = schedules.iterator();
+		while (iter.hasNext()) {
+			Schedule s = iter.next();
+			if (name.equals(s.getName())) {
+				return s;
+			}
+		}
+
+		throw new NoNameMatchException();
 	}
 
 	/**

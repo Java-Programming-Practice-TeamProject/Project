@@ -9,6 +9,10 @@ public class Server {
 	HashMap<String, DataOutputStream> clients;
 	ServerSocket ss;
 
+	public static void main(String[] args) {
+		new Server();
+	}
+
 	public Server() {
 		threads = new ArrayList<Thread>();
 		clients = new HashMap<String, DataOutputStream>();
@@ -18,7 +22,7 @@ public class Server {
 
 	public void start() {
 		try {
-			ss = new ServerSocket (5000);
+			ss = new ServerSocket(5000);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -28,9 +32,15 @@ public class Server {
 			try {
 				Socket soc = ss.accept();
 				System.out.println("new connection arrived");
-				Thread t = new ReceiveThread(soc);
+				Thread t = new Receive(soc);
 				t.start();
+
 				threads.add(t);
+				for (Thread th : threads) {
+					if (!th.isAlive()) {
+						threads.remove(th);
+					}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -39,41 +49,133 @@ public class Server {
 
 	public synchronized void addClient(String name, Socket soc) throws IOException {
 		clients.put(name, new DataOutputStream(soc.getOutputStream()));
+		updateName();
 	}
 
-	public synchronized void removeClient(String name) {
+	public synchronized void removeClient(String name) throws IOException {
 		clients.remove(name);
+		updateName();
 	}
 
-	public synchronized void sendMsg(String msg, String name) throws Exception {
+	public synchronized void updateName() throws IOException {
 		Iterator<String> it = clients.keySet().iterator();
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			String client_name = it.next();
-			clients.get(client_name).writeUTF(name + ":" + msg);
+			clients.get(client_name).writeInt(0);
+			clients.get(client_name).writeInt(clients.keySet().size());
+			Iterator<String> it2 = clients.keySet().iterator();
+			while (it2.hasNext()) {
+				String name = it2.next();
+				clients.get(client_name).writeUTF(name);
+			}
+			clients.get(client_name).flush();
 		}
 	}
 
-	class ReceiveThread extends Thread {
+	public synchronized void sendFDSchedule(String to_send, String name, Boolean isImp, String memo, int RepeatType,
+			boolean isFullDay, int[] start) throws Exception {
+		Iterator<String> it = clients.keySet().iterator();
+		while (it.hasNext()) {
+			String client_name = it.next();
+			if (client_name.equals(to_send)) {
+				clients.get(client_name).writeInt(1);
+				clients.get(client_name).writeUTF(name);
+				clients.get(client_name).writeBoolean(isImp);
+				clients.get(client_name).writeUTF(memo);
+				clients.get(client_name).writeInt(RepeatType);
+				clients.get(client_name).writeBoolean(true);
+				clients.get(client_name).flush();
+				for (int i = 0; i < 3; i++) {
+					clients.get(client_name).writeInt(start[i]);
+				}
+				clients.get(client_name).flush();
+			}
+		}
+	}
+
+	public synchronized void sendNormSchedule(String to_send, String name, Boolean isImp, String memo, int RepeatType,
+			boolean isFullDay, int[] start, int[] end, boolean canBeOverlapped) throws Exception {
+		Iterator<String> it = clients.keySet().iterator();
+		while (it.hasNext()) {
+			String client_name = it.next();
+			if (client_name.equals(to_send)) {
+				clients.get(client_name).writeInt(1);
+				clients.get(client_name).writeUTF(name);
+				clients.get(client_name).writeBoolean(isImp);
+				clients.get(client_name).writeUTF(memo);
+				clients.get(client_name).writeInt(RepeatType);
+				clients.get(client_name).writeBoolean(false);
+				clients.get(client_name).flush();
+				for (int i = 0; i < 5; i++) {
+					clients.get(client_name).writeInt(start[i]);
+					clients.get(client_name).writeInt(end[i]);
+				}
+				clients.get(client_name).writeBoolean(canBeOverlapped);
+				clients.get(client_name).flush();
+			}
+		}
+	}
+
+	class Receive extends Thread {
 		Socket soc;
 		DataInputStream dis;
+		DataOutputStream dos;
 		String name;
 
-		public ReceiveThread(Socket soc) throws Exception {
+		public Receive(Socket soc) throws Exception {
 			this.soc = soc;
 			dis = new DataInputStream(soc.getInputStream());
-			this.name = dis.readUTF();
+			dos = new DataOutputStream(soc.getOutputStream());
+			while (true) {
+				try {
+					name = dis.readUTF();
+					if (!clients.keySet().contains(name)) {
+						dos.writeBoolean(true);
+						break;
+					} else {
+						dos.writeBoolean(false);
+					}
+				} catch (IOException e) {
+				}
+				dos.flush();
+			}
 			addClient(name, soc);
+			System.out.println("add " + name);
 		}
 
 		public void run() {
 			try {
 				while (true) {
-					String msg = dis.readUTF();
-					sendMsg(msg, name);
-				}
-			} catch (Exception e) {
-				removeClient(this.name);
+					String to_send = dis.readUTF();
+					System.out.println(to_send);
+					String name = dis.readUTF();
+					Boolean isImp = dis.readBoolean();
+					String memo = dis.readUTF();
+					int RepeatType = dis.readInt();
+					boolean isFullDay = dis.readBoolean();
+					if (isFullDay) {
+						int[] start = new int[3];
+						for (int i = 0; i < 3; i++) {
+							start[i] = dis.readInt();
+						}
+						sendFDSchedule(to_send, name, isImp, memo, RepeatType, isFullDay, start);
+					} else {
+						int[] start = new int[5];
+						int[] end = new int[5];
+						for (int i = 0; i < 5; i++) {
+							start[i] = dis.readInt();
+							end[i] = dis.readInt();
+						}
+						boolean canBeOverlapped = dis.readBoolean();
+						sendNormSchedule(to_send, name, isImp, memo, RepeatType, isFullDay, start, end, canBeOverlapped);
+						}
+					}
+				} catch (Exception e) {
+					System.out.println("remove " + this.name);
+					try {
+						removeClient(this.name);
+					} catch (IOException e1) {}		
 			}
 		}
-	}
+	}	
 }
