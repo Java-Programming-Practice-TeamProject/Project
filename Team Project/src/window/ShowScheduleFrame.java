@@ -31,6 +31,7 @@ public class ShowScheduleFrame extends JFrame {
 		if (s instanceof FullDaySchedule) {
 			FullDaySchedule fds = (FullDaySchedule) s;
 			StartTimeField.setText(fds.getTime().toString());
+			EndTimeField.setText("");
 			FullDayCheckBox.doClick();
 		} else {
 			NormalSchedule ns = (NormalSchedule) s;

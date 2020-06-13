@@ -1,77 +1,40 @@
-import java.awt.EventQueue;
+package window;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JButton;
-import javax.swing.border.CompoundBorder;
-import javax.swing.JLabel;
-import javax.swing.ScrollPaneConstants;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.util.ArrayList;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import scheduler.*;
 import java.time.LocalDateTime;
-import java.awt.FlowLayout;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
+/*
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.JScrollBar;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import java.awt.Component;
-import javax.swing.SwingConstants;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JComboBox;
-import java.awt.Font;
+import net.miginfocom.swing.MigLayout;*/
 
-public class WeeklyScheduleFrame {
+public class WeeklyScheduleFrame extends JFrame {
 
-	private JFrame frame;
 	JPanel panel;
-
-	/**
-	 * test
-	 */
-	/*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					WeeklyScheduleFrame window = new WeeklyScheduleFrame();
-					window.ShowWeeklyFrame(2);
-					window.frame.setVisible(true);
-					showweeklyschedule(panel,"11111222223333344444555556666677777",0 ,20, 30, Color.YELLOW,1,0,2);
-					showweeklyschedule(panel,"ab",1 ,4, 5, Color.YELLOW,2,1,2);
-					showweeklyschedule(panel,"1111122222333334",1 ,4, 8, Color.MAGENTA,2,0,2);
-					showweeklyalldayschedule(panel,"Test1Test1Test1",5,Color.PINK,0);
-					showweeklyalldayschedule(panel,"Test2Test2Test2",5,Color.WHITE,1);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-
-	}
-	*/
+	JPanel panel_1 = new JPanel();
+	JPanel panel_3;
+	JScrollPane scrollPane;
+	JPanel panel_4;
+	GridBagLayout gbl_panel_4;
+	GridBagConstraints first_gridbag;
+	JPanel first_panel;
+	JPanel[] panel_times;
+	GridBagConstraints[] times_constraints;
+	JPanel[] panel_dates;
+	GridBagConstraints[] dates_constraints; 
 	
 	public WeeklyScheduleFrame(ArrayList<ArrayList<Schedule>> schedule){
-		ShowWeeklyFrame(0);
+		setVisible(true);
+		
 		int maxnumofallday = 0;
 		for(int i=0;i<7;i++) {
 			int numofallday = 0;
-			for (Schedule s : schedule[i]) {
+			for (Schedule s : schedule.get(i)) {
 				if(s instanceof FullDaySchedule) {
 					numofallday++;
 				}
@@ -80,63 +43,39 @@ public class WeeklyScheduleFrame {
 				maxnumofallday = numofallday;
 			}
 		}
-		ShowWeeklyFrame(maxnumofallday);
-		for(int i=0;i<7;i++) {
-			int alldayorder = 0;
-			for(Schedule s : schedule[i]) {
-				if(s instanceof FullDaySchedule) {
-					showweeklyalldayschedule(panel,s.getname(),i,Color color, alldayorder++); //TODO : color
-				}else {
-					LocalDateTime starttime = s.getStartTime();
-					int intstarttime = starttime.getHour()*4+starttime.getMinute()%15;
-					LocalDateTime endtime = s.getEndTime();
-					int intendtime = endtime.getHour()*4+endtime.getMinute()%15;
-					showweeklyschedule(panel,s.getname(),i,intstarttime, intendtime, Color color,int num, int order, maxnumofallday);
-				//TODO : color, num, order
-				}
-			}
-		}
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	public void ShowWeeklyFrame(int maxnumofallday) {
-		frame = new JFrame();
-		frame.getContentPane().setMinimumSize(new Dimension(1430, 700));
-		frame.setMinimumSize(new Dimension(1430, 700));
-		frame.getContentPane().setSize(new Dimension(500, 500));
-		frame.setBounds(100, 100, 510, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+		getContentPane().setMinimumSize(new Dimension(1430, 700));
+		setMinimumSize(new Dimension(1430, 700));
+		getContentPane().setSize(new Dimension(500, 500));
+		setBounds(100, 100, 510, 500);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
-		JPanel panel_1 = new JPanel();
 		panel_1.setPreferredSize(new Dimension(1430, 500));
-		frame.getContentPane().add(panel_1);
+		getContentPane().add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 		
-		JPanel panel_3 = new JPanel();
+		panel_3 = new JPanel();
 		panel_3.setMinimumSize(new Dimension(1400, 23));
-		JScrollPane scrollPane = new JScrollPane(panel_3);
+		scrollPane = new JScrollPane(panel_3);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel_1.add(scrollPane);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 		
-		this.panel = new JPanel();
-		JPanel panel_4 = this.panel;
+		panel = new JPanel();
+		panel_4 = panel;
 		panel_3.add(panel_4);
-		GridBagLayout gbl_panel_4 = new GridBagLayout();
+		gbl_panel_4 = new GridBagLayout();
 		panel_4.setLayout(gbl_panel_4);
 		
-		JPanel first_panel = new JPanel();
-		GridBagConstraints first_gridbag = new GridBagConstraints();
+		first_panel = new JPanel();
+		first_gridbag = new GridBagConstraints();
 		first_gridbag.gridx = 0;
 		first_gridbag.gridy = 0;
 		panel_4.add(first_panel,first_gridbag);
 		
-		JPanel[] panel_times = new JPanel[96];
-		GridBagConstraints[] times_constraints = new GridBagConstraints[96];
+		panel_times = new JPanel[96];
+		times_constraints = new GridBagConstraints[96];
 		for(int i=0;i<96;i++) {
 			panel_times[i] = new JPanel();
 			times_constraints[i] = new GridBagConstraints();
@@ -157,8 +96,8 @@ public class WeeklyScheduleFrame {
 			panel_4.add(panel_times[i],times_constraints[i]);
 		}
 		
-		JPanel[] panel_dates = new JPanel[8];
-		GridBagConstraints[] dates_constraints = new GridBagConstraints[8];
+		panel_dates = new JPanel[8];
+		dates_constraints = new GridBagConstraints[8];
 		for(int i=0;i<7;i++) {
 			panel_dates[i] = new JPanel();
 			if(i%2==0)
@@ -171,7 +110,6 @@ public class WeeklyScheduleFrame {
 			
 			panel_4.add(panel_dates[i],dates_constraints[i]);
 		}
-		
 		panel_dates[0].add(new JLabel("                         Sun                         "));
 		panel_dates[1].add(new JLabel("                         Mon                         "));
 		panel_dates[2].add(new JLabel("                         Tue                         "));
@@ -197,8 +135,82 @@ public class WeeklyScheduleFrame {
 		gridsep1.gridwidth = 6*7;
 		sep1.setPreferredSize(new Dimension(1400,1));
 		panel_4.add(sep1,gridsep1);
+		
+		for(int i=0;i<7;i++) {
+			int alldayorder = 0;
+			int[] order = new int[100];
+			int orderindex = 0;
+			int[][] overlap = new int[96][100];
+			for(Schedule s : schedule.get(i)) {
+				if(s instanceof FullDaySchedule) {
+					showweeklyalldayschedule(panel,s.getName(),i,s.getcolor(), alldayorder++);
+				}else {
+					NormalSchedule ns = (NormalSchedule) s;
+					LocalDateTime starttime = ns.getStartTime();
+					int intstarttime = starttime.getHour()*4+starttime.getMinute()%15;
+					LocalDateTime endtime = ns.getEndTime();
+					int intendtime = endtime.getHour()*4+endtime.getMinute()%15;
+										
+					if(overlap[intstarttime][0]==0&&overlap[intendtime-1][0]==0) {
+						order[orderindex] = 0;
+						for(int j=intstarttime;j<intendtime;j++) {
+							overlap[j][0]++;
+						}
+					}
+					else if(overlap[intstarttime][0]!=0){
+						int j = 0;
+						while(overlap[intstarttime][j]!=0) {
+							j++;
+						}
+						while(overlap[intendtime-1][j]!=0) {
+							j++;
+						}
+						for(int k=intstarttime;k<intendtime-1;k++) {
+							overlap[k][j]++;
+						}
+						order[orderindex] = j;
+					}
+					else if(overlap[intendtime-1][0]!=0) {
+						int j = 0;
+						while(overlap[intendtime-1][j]!=0) {
+							j++;
+						}
+						while(overlap[intstarttime][j]!=0) {
+							j++;
+						}
+						for(int k=intstarttime;k<intendtime;k++) {
+							overlap[k][j]++;
+						}
+						order[orderindex] = j;
+					}
+				}
+			}
+			orderindex = 0;
+			for(Schedule s : schedule.get(i)) {
+				NormalSchedule ns = (NormalSchedule) s;
+				LocalDateTime starttime = ns.getStartTime();
+				int intstarttime = starttime.getHour()*4+starttime.getMinute()%15;
+				LocalDateTime endtime = ns.getEndTime();
+				int intendtime = endtime.getHour()*4+endtime.getMinute()%15;
+				
+				int num = 1;
+				for(int j=intstarttime;j<intendtime;j++) {
+					int sum = 0;
+					for(int k=0;k<100;k++) {
+						sum+=overlap[j][k];
+					}
+					if(sum>num) {
+						num = sum;
+					}
+				}
+				
+				showweeklyschedule(panel,s.getName(),i,intstarttime, intendtime, s.getcolor(), num, order[orderindex++], maxnumofallday);
+			}
+		}
 	}
-	/*
+
+
+	/**
 	 * panel : Gridbag panel
 	 * name : name of schedule
 	 * date : day of week : sun-0, mon-1, tue-2,..., sat-6
@@ -209,6 +221,7 @@ public class WeeklyScheduleFrame {
 	 * numofallday : maximum number of allday schedule of the week
 	 */
 	static void showweeklyschedule(JPanel panel,String name,int date ,int starttime, int endtime, Color color,int num, int order, int numofallday) {
+
 		JPanel paneltemp = new JPanel();
 		
 		paneltemp.setPreferredSize(new Dimension(210/num,(endtime-starttime)*30));
