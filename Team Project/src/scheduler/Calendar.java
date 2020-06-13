@@ -4,6 +4,7 @@ import exception.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -11,6 +12,7 @@ import java.time.temporal.ChronoUnit;
 public class Calendar {
 	private ArrayList<Schedule> schedules;
 	private String name;
+	private Color color;
 
 	/**
 	 * Default constructor for class Calendar
@@ -24,9 +26,10 @@ public class Calendar {
 	 * Another constructor for class Calendar
 	 * @param name name of calendar
 	 */
-	public Calendar(String name) {
+	public Calendar(String name, Color color) {
 		this.name = name;
 		schedules = new ArrayList<>();
+		this.color = color;
 	}
 
 	/**
@@ -35,6 +38,14 @@ public class Calendar {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * getter of color
+	 * @return color of calendar
+	 */
+	public Color getColor() {
+		return color;
 	}
 
 	/**
@@ -49,14 +60,14 @@ public class Calendar {
      * add new schedule
 	 * time[year, month, date, hour, minute]
      * @param   all variables in class Schedule
-     * @exception AlreadyDefinedException			이미 같은 이름의 일정이 존재할 때
-	 * @exception TooLongNameEnteredException		이름이 너무 길 때
-     * @exception NoNameEnteredException			이름이 입력되지 않았을 때
-     * @exception TimeAlreadyFullException		   	이미 그 시간에 일정이 존재할 때
-     * @exception StartTimeAfterEndTimeException	시작 시간이 끝나는 시간보다 늦을 때
-	 * @exception NotRepeatableException		 	일정이 반복 간격보다 길 때
+     * @exception AlreadyDefinedException			�씠誘� 媛숈� �씠由꾩쓽 �씪�젙�씠 議댁옱�븷 �븣
+	 * @exception TooLongNameEnteredException		�씠由꾩씠 �꼫臾� 湲� �븣
+     * @exception NoNameEnteredException			�씠由꾩씠 �엯�젰�릺吏� �븡�븯�쓣 �븣
+     * @exception TimeAlreadyFullException		   	�씠誘� 洹� �떆媛꾩뿉 �씪�젙�씠 議댁옱�븷 �븣
+     * @exception StartTimeAfterEndTimeException	�떆�옉 �떆媛꾩씠 �걹�굹�뒗 �떆媛꾨낫�떎 �뒭�쓣 �븣
+	 * @exception NotRepeatableException		 	�씪�젙�씠 諛섎났 媛꾧꺽蹂대떎 湲� �븣
      */
-    public void add_schedule(String name, int[] start, int[] end, boolean isImp, boolean overlap, String memo, int repeat, boolean isAllDay) {
+    public void add_schedule(String name, int[] start, int[] end, boolean isImp, boolean overlap, String memo, int repeat, boolean isAllDay, Color color) {
 		LocalDateTime start_time, end_time;
 		LocalDate time;
 		Schedule new_schedule;
@@ -70,7 +81,7 @@ public class Calendar {
 
 		if (isAllDay) {
 			time = LocalDate.of(start[0], start[1], start[2]);
-			new_schedule = new FullDaySchedule(name, isImp, memo, repeat, time);
+			new_schedule = new FullDaySchedule(name, isImp, memo, repeat, time,color);
 		} 
 		else {
 			start_time = LocalDateTime.of(start[0], start[1], start[2], start[3], start[4], 0, 0);
@@ -128,7 +139,7 @@ public class Calendar {
 					}
 				}
 			}
-			new_schedule = new NormalSchedule(name, isImp, overlap, memo, repeat, start_time, end_time);
+			new_schedule = new NormalSchedule(name, isImp, overlap, memo, repeat, start_time, end_time,color);
 		}
 
     	schedules.add(new_schedule);
@@ -137,8 +148,8 @@ public class Calendar {
 	/**
 	 * delete schedule
 	 * @param name name of schedule to delete
-	 * @exception NoNameEnteredException 이름이 입력되지 않았을 때
-	 * @exception NoNameMatchException   입력된 이름을 가진 schedule이 없을 때
+	 * @exception NoNameEnteredException �씠由꾩씠 �엯�젰�릺吏� �븡�븯�쓣 �븣
+	 * @exception NoNameMatchException   �엯�젰�맂 �씠由꾩쓣 媛�吏� schedule�씠 �뾾�쓣 �븣
 	 */
 	public void remove_schedule(String name) {
 		if (name == null) {
@@ -160,21 +171,21 @@ public class Calendar {
 	/**
 	 * change details of schedule
 	 * @param all variables in class Schedule & new name of schedule
-	 * @exception NoNameEnteredException        	이름이 입력되지 않았을 때
-	 * @exception AlreadyDefinedException        	이미 같은 이름의 일정이 존재할 때
-	 * @exception TimeAlreadyFullException       	이미 그 시간에 일정이 존재할 때
-	 * @exception StartTimeAfterEndTimeException 	시작 시간이 끝나는 시간보다 늦을 때
-	 * @exception NoNameMatchException           	입력된 이름을 가진 schedule이 없을 때
-	 * @exception NotRepeatableException		 	일정이 반복 간격보다 길 때
+	 * @exception NoNameEnteredException        	�씠由꾩씠 �엯�젰�릺吏� �븡�븯�쓣 �븣
+	 * @exception AlreadyDefinedException        	�씠誘� 媛숈� �씠由꾩쓽 �씪�젙�씠 議댁옱�븷 �븣
+	 * @exception TimeAlreadyFullException       	�씠誘� 洹� �떆媛꾩뿉 �씪�젙�씠 議댁옱�븷 �븣
+	 * @exception StartTimeAfterEndTimeException 	�떆�옉 �떆媛꾩씠 �걹�굹�뒗 �떆媛꾨낫�떎 �뒭�쓣 �븣
+	 * @exception NoNameMatchException           	�엯�젰�맂 �씠由꾩쓣 媛�吏� schedule�씠 �뾾�쓣 �븣
+	 * @exception NotRepeatableException		 	�씪�젙�씠 諛섎났 媛꾧꺽蹂대떎 湲� �븣
 	 */
 	public void modify_schedule(String name, String new_name, int[] start, int[] end, boolean isImp, boolean overlap,
-			String memo, int repeat, boolean isAllDay) {
+			String memo, int repeat, boolean isAllDay, Color color) {
 		if (new_name == null) {
 			throw new NoNameEnteredException();
 		}
 
 		remove_schedule(name);
-		add_schedule(new_name, start, end, isImp, overlap, memo, repeat, isAllDay);
+		add_schedule(new_name, start, end, isImp, overlap, memo, repeat, isAllDay,color);
 	}
 
 	/**
