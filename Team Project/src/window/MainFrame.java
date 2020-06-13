@@ -264,7 +264,7 @@ public class MainFrame extends JFrame {
 			else {
 				Calendar cal = scheduler.get_calendar(selectedcal);
 				JButton button = (JButton) e.getSource();
-				int i = Integer.parseInt(button.getText()) ;
+				int i = Integer.parseInt(button.getText()) - 1;
 
 				for (int j = 0; j < 7; j++) {
 					JButton db = DayButton.get(7 * i + j);
