@@ -185,24 +185,25 @@ public class WeeklyScheduleFrame extends JFrame {
 			}
 			orderindex = 0;
 			for(Schedule s : schedule.get(i)) {
-				NormalSchedule ns = (NormalSchedule) s;
-				LocalDateTime starttime = ns.getStartTime();
-				int intstarttime = starttime.getHour()*4+starttime.getMinute()/15;
-				LocalDateTime endtime = ns.getEndTime();
-				int intendtime = endtime.getHour()*4+endtime.getMinute()/15;
-				
-				int num = 1;
-				for(int j=intstarttime;j<intendtime;j++) {
-					int sum = 0;
-					for(int k=0;k<100;k++) {
-						sum+=overlap[j][k];
+				if(s instanceof NormalSchedule) {
+					NormalSchedule ns = (NormalSchedule) s;
+					LocalDateTime starttime = ns.getStartTime();
+					int intstarttime = starttime.getHour()*4+starttime.getMinute()/15;
+					LocalDateTime endtime = ns.getEndTime();
+					int intendtime = endtime.getHour()*4+endtime.getMinute()/15;
+
+					int num = 1;
+					for(int j=intstarttime;j<intendtime;j++) {
+						int sum = 0;
+						for(int k=0;k<100;k++) {
+							sum+=overlap[j][k];
+						}
+						if(sum>num) {
+							num = sum;
+						}
 					}
-					if(sum>num) {
-						num = sum;
-					}
-				}
-				
-				showweeklyschedule(panel,s.getName(),i,intstarttime, intendtime, s.getColor(), num, order[orderindex++], maxnumofallday);
+					showweeklyschedule(panel,s.getName(),i,intstarttime, intendtime, s.getColor(), num, order[orderindex++], maxnumofallday);
+				}		
 			}
 		}
 	}
