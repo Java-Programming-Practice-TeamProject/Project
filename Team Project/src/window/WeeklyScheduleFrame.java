@@ -223,7 +223,7 @@ public class WeeklyScheduleFrame extends JFrame {
 
 		JPanel paneltemp = new JPanel();
 		
-		paneltemp.setPreferredSize(new Dimension(210/num,(endtime-starttime)*30));
+		paneltemp.setPreferredSize(new Dimension(210/num,(endtime-starttime)*26));
 		paneltemp.setBackground(color);
 		GridBagConstraints gridbagtemp = new GridBagConstraints();	
 			
