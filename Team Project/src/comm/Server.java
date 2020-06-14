@@ -34,6 +34,7 @@ public class Server {
 
 		while (true) {
 			try {
+				ArrayList<Thread> removethreads = new ArrayList<Thread>();
 				Socket soc = ss.accept();
 				System.out.println("new connection arrived");
 				Thread t = new Receive(soc);
@@ -42,9 +43,11 @@ public class Server {
 				threads.add(t);
 				for (Thread th : threads) {
 					if (!th.isAlive()) {
-						threads.remove(th);
+						removethreads.add(th);
 					}
 				}
+				threads.removeAll(removethreads);
+				removethreads.clear();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
