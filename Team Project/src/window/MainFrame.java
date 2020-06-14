@@ -308,6 +308,14 @@ public class MainFrame extends JFrame {
 			}
 
 			ShowScheduleFrame ssf = new ShowScheduleFrame(s, cal.getName());
+			ssf.getDelButton().addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					cal.remove_schedule(ssf.getSeletedScheduleName());
+					ssf.setVisible(false);
+					ssf.dispose();
+					loadCalendar();
+				}
+			});
 			ssf.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			ssf.setVisible(true);
 		}

@@ -25,6 +25,7 @@ public class ShowScheduleFrame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -5729594962921484723L;
+	private JButton DelButton;
 	private JTextField NameField;
 	private JTextField StartTimeField;
 	private JTextField EndTimeField;
@@ -35,6 +36,14 @@ public class ShowScheduleFrame extends JFrame {
 	private ArrayList<Schedule> schedules;
 	private int index;
 	private String name;
+
+	public JButton getDelButton() {
+		return DelButton;
+	}
+
+	public String getSeletedScheduleName() {
+		return schedules.get(index).getName();
+	}
 
 	public void loadSchedules() {
 		if (index < 0 || index >= schedules.size()) {
@@ -94,7 +103,7 @@ public class ShowScheduleFrame extends JFrame {
 		
 		JPanel ButtonPanel = new JPanel();
 		getContentPane().add(ButtonPanel, BorderLayout.NORTH);
-		ButtonPanel.setLayout(new GridLayout(0, 2, 10, 0));
+		ButtonPanel.setLayout(new GridLayout(0, 3, 10, 0));
 		
 		JButton PrevButton = new JButton("<");
 		PrevButton.addActionListener(new ActionListener() {
@@ -107,6 +116,9 @@ public class ShowScheduleFrame extends JFrame {
 			}
 		});
 		ButtonPanel.add(PrevButton);
+
+		DelButton = new JButton("Delete");
+		ButtonPanel.add(DelButton);
 		
 		JButton NextButton = new JButton(">");
 		NextButton.addActionListener(new ActionListener() {
