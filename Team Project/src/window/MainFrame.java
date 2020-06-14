@@ -578,9 +578,9 @@ public class MainFrame extends JFrame {
 								String selected_name = rf.getCalComboBox();
 								Calendar cal = scheduler.get_calendar(selected_name);
 								if (isFullDay) {
-									cal.add_schedule(name, start, start, isImp, true, memo, RepeatType, true, color);
+									cal.add_schedule(name, start, start, isImp, true, memo, RepeatType, true, cal.getColor());
 								} else {
-									cal.add_schedule(name, start, end, isImp, canBeOverlapped, memo, RepeatType, false, color);
+									cal.add_schedule(name, start, end, isImp, canBeOverlapped, memo, RepeatType, false, cal.getColor());
 								}
 								rf.setVisible(false);
 								rf.dispose();
