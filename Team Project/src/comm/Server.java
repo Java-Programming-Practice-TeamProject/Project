@@ -56,15 +56,18 @@ public class Server {
 
 	public synchronized void addClient(String name, Socket soc) throws IOException {
 		clients.put(name, new DataOutputStream(soc.getOutputStream()));
+		System.out.println("User '" + name + "' added");
 		updateName();
 	}
 
 	public synchronized void removeClient(String name) throws IOException {
 		clients.remove(name);
+		System.out.println("User '" + name + "' removed");
 		updateName();
 	}
 
 	public synchronized void updateName() throws IOException {
+		System.out.println("Update user names");
 		Iterator<String> it = clients.keySet().iterator();
 		while (it.hasNext()) {
 			String client_name = it.next();
@@ -149,14 +152,12 @@ public class Server {
 				dos.flush();
 			}
 			addClient(name, soc);
-			System.out.println("add " + name);
 		}
 
 		public void run() {
 			try {
 				while (true) {
 					String to_send = dis.readUTF();
-					System.out.println(to_send);
 					String name = dis.readUTF();
 					Boolean isImp = dis.readBoolean();
 					String memo = dis.readUTF();
@@ -169,6 +170,7 @@ public class Server {
 							start[i] = dis.readInt();
 						}
 						sendFDSchedule(to_send, name, isImp, memo, RepeatType, isFullDay, start, colorRGB);
+						System.out.println("Send '" + name + "' schedule to '" + to_send + "'");
 					} else {
 						int[] start = new int[5];
 						int[] end = new int[5];
@@ -178,13 +180,13 @@ public class Server {
 						}
 						boolean canBeOverlapped = dis.readBoolean();
 						sendNormSchedule(to_send, name, isImp, memo, RepeatType, isFullDay, start, end, canBeOverlapped, colorRGB);
-						}
+						System.out.println("Send '" + name + "' to '" + to_send + "'");
 					}
-				} catch (Exception e) {
-					System.out.println("remove " + this.name);
-					try {
-						removeClient(this.name);
-					} catch (IOException e1) {}		
+				}
+			} catch (Exception e) {
+				try {
+					removeClient(this.name);
+				} catch (IOException e1) {}		
 			}
 		}
 	}	

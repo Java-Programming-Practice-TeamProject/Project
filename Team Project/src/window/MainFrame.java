@@ -40,12 +40,12 @@ import scheduler.NormalSchedule;
 import scheduler.Schedule;
 import scheduler.Scheduler;
 
-
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 26869752226168311L;
 
 	private Scheduler scheduler = new Scheduler();
-	private Color[] colors = {Color.MAGENTA, Color.PINK,  Color.RED, Color.ORANGE,  Color.YELLOW, Color.GREEN,  Color.CYAN, Color.BLUE ,  Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY, Color.LIGHT_GRAY};
+	private Color[] colors = { Color.MAGENTA, Color.PINK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN,
+			Color.CYAN, Color.BLUE, Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY, Color.LIGHT_GRAY };
 	private JComboBox<String> calendarComboBox;
 	private JSpinner yearSpinner, monthSpinner;
 	private ArrayList<JButton> WeekButton = new ArrayList<>();
@@ -55,7 +55,6 @@ public class MainFrame extends JFrame {
 	private Sender sender;
 	private ReceiveThread receive;
 	private String[] user_names;
-	
 
 	public static void main(String[] args) {
 		try {
@@ -228,7 +227,6 @@ public class MainFrame extends JFrame {
 
 		receive = new ReceiveThread();
 		receive.start();
-		receive.setDaemon(true);
 	}
 
 	class WeekButtonClickListener implements ActionListener {
@@ -236,13 +234,13 @@ public class MainFrame extends JFrame {
 			int year = (int) yearSpinner.getValue(), month = (int) monthSpinner.getValue();
 			String selectedcal = calendarComboBox.getSelectedItem().toString();
 			ArrayList<ArrayList<Schedule>> schedule = new ArrayList<>();
-			if(selectedcal.equals("default")) {
-				for(int k=0;k<scheduler.get_name().length;k++) {
-					Calendar cal  = scheduler.get_calendar((scheduler.get_name()[k]));
+			if (selectedcal.equals("default")) {
+				for (int k = 0; k < scheduler.get_name().length; k++) {
+					Calendar cal = scheduler.get_calendar((scheduler.get_name()[k]));
 					JButton button = (JButton) e.getSource();
 					int i = Integer.parseInt(button.getText()) - 1;
-					
-					for(int j=0;j<7;j++) {
+
+					for (int j = 0; j < 7; j++) {
 						schedule.add(new ArrayList<Schedule>());
 					}
 
@@ -260,8 +258,7 @@ public class MainFrame extends JFrame {
 						schedule.get(j).addAll(cal.read_schedule(today));
 					}
 				}
-			}
-			else {
+			} else {
 				Calendar cal = scheduler.get_calendar(selectedcal);
 				JButton button = (JButton) e.getSource();
 				int i = Integer.parseInt(button.getText()) - 1;
@@ -336,7 +333,8 @@ public class MainFrame extends JFrame {
 							JCheckBox[] cb = asf.getCheckBox();
 							try {
 								c.add_schedule(asf.getName(), asf.getTime(false), asf.getTime(true), cb[3].isSelected(),
-										cb[2].isSelected(), asf.getMemo(), asf.getRepeat(), cb[1].isSelected(),c.getColor());
+										cb[2].isSelected(), asf.getMemo(), asf.getRepeat(), cb[1].isSelected(),
+										c.getColor());
 								asf.setVisible(false);
 								asf.dispose();
 								loadCalendar();
@@ -357,12 +355,11 @@ public class MainFrame extends JFrame {
 						Color calcolor;
 						if (0 <= selected_col && selected_col <= 10) {
 							calcolor = colors[selected_col];
-						}
-						else {
+						} else {
 							calcolor = colors[11];
 						}
 						if (textField[0].length() != 0 && textField[1].length() == 0) {
-							scheduler.add_calendar(textField[0],calcolor);
+							scheduler.add_calendar(textField[0], calcolor);
 							calendarComboBox.addItem(textField[0]);
 						} else if (textField[0].length() == 0 && textField[1].length() != 0) {
 							scheduler.remove_calendar(textField[1]);
@@ -393,7 +390,6 @@ public class MainFrame extends JFrame {
 					} catch (Exception e2) {
 					}
 
-					sender = null;
 					sf.setVisible(false);
 					sf.dispose();
 				}
@@ -405,22 +401,22 @@ public class MainFrame extends JFrame {
 	public void loadCalendar() {
 		int year = (int) yearSpinner.getValue(), month = (int) monthSpinner.getValue();
 		String selectedItem = calendarComboBox.getSelectedItem().toString();
-		if(selectedItem.equals("default")) {
+		if (selectedItem.equals("default")) {
 			LocalDate date = LocalDate.of(year, month, 1);
 			int start_pos = date.getDayOfWeek().getValue();
-	
+
 			for (JButton b : DayButton) {
 				b.setText("");
 			}
-	
+
 			start_pos %= 7;
-			
+
 			for (int i = 0; i < date.lengthOfMonth(); i++) {
 				JButton button = DayButton.get(start_pos + i);
 				button.setHorizontalAlignment(SwingConstants.LEFT);
 				button.setVerticalAlignment(SwingConstants.TOP);
 				ArrayList<Schedule> schedules = new ArrayList<Schedule>();
-				for(int j=0;j<scheduler.get_name().length;j++) {
+				for (int j = 0; j < scheduler.get_name().length; j++) {
 					schedules.addAll(scheduler.get_calendar(scheduler.get_name()[j]).read_schedule(date.plusDays(i)));
 				}
 				if (schedules.size() == 0) {
@@ -431,18 +427,17 @@ public class MainFrame extends JFrame {
 					button.setText("<html><h2>" + (i + 1) + "</h2><br>" + schedules.size() + " things</html>");
 				}
 			}
-		}
-		else {
+		} else {
 			Calendar cal = scheduler.get_calendar(selectedItem);
 			LocalDate date = LocalDate.of(year, month, 1);
 			int start_pos = date.getDayOfWeek().getValue();
-	
+
 			for (JButton b : DayButton) {
 				b.setText("");
 			}
-	
+
 			start_pos %= 7;
-			
+
 			for (int i = 0; i < date.lengthOfMonth(); i++) {
 				JButton button = DayButton.get(start_pos + i);
 				button.setHorizontalAlignment(SwingConstants.LEFT);
@@ -490,7 +485,7 @@ public class MainFrame extends JFrame {
 				dos.writeUTF(s.getMemo());
 				dos.writeInt(s.getRepeatType());
 				dos.writeInt(s.getColor().getRGB());
-				
+
 				dos.flush();
 				if (s instanceof FullDaySchedule) {
 					LocalDate time = ((FullDaySchedule) s).getTime();
@@ -537,12 +532,11 @@ public class MainFrame extends JFrame {
 				dos = new DataOutputStream(socket.getOutputStream());
 			} catch (IOException e) {
 			}
-			//System.out.println("receive on");
 		}
 
 		public void run() {
-			try {
-				while (true) {
+			while (true) {
+				try {
 					int mode = dis.readInt();
 					if (mode == 0) {
 						int size = dis.readInt();
@@ -577,10 +571,17 @@ public class MainFrame extends JFrame {
 							public void actionPerformed(ActionEvent e) {
 								String selected_name = rf.getCalComboBox();
 								Calendar cal = scheduler.get_calendar(selected_name);
-								if (isFullDay) {
-									cal.add_schedule(name, start, start, isImp, true, memo, RepeatType, true, cal.getColor());
-								} else {
-									cal.add_schedule(name, start, end, isImp, canBeOverlapped, memo, RepeatType, false, cal.getColor());
+								try {
+									if (isFullDay) {
+										cal.add_schedule(name, start, start, isImp, true, memo, RepeatType, true,
+												cal.getColor());
+									} else {
+										cal.add_schedule(name, start, end, isImp, canBeOverlapped, memo, RepeatType,
+												false, cal.getColor());
+									}
+								} catch (Exception e1) {
+									JOptionPane.showMessageDialog(rf, e1.getMessage(), "Exception",
+											JOptionPane.ERROR_MESSAGE);
 								}
 								rf.setVisible(false);
 								rf.dispose();
@@ -589,12 +590,9 @@ public class MainFrame extends JFrame {
 						});
 						rf.setVisible(true);
 					}
-
+				} catch (Exception e) {
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
-			//System.out.println("receive off");
 		}
 	}
 }
