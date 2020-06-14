@@ -56,14 +56,6 @@ public class MainFrame extends JFrame {
 	private ReceiveThread receive;
 	private String[] user_names;
 
-	public static void main(String[] args) {
-		try {
-			new MainFrame();
-		} catch (Exception e) {
-
-		}
-	}
-
 	public MainFrame() {
 		try {
 			socket = new Socket("localhost", 5000);
