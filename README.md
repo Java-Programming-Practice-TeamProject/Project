@@ -1,12 +1,12 @@
 # Java Programming Team Project
-#Scheduler
+# Scheduler
 
-#실행법
+# 실행법
 1. Server.java 실행
 2. StartCalendar.java 실행
 user를 추가하고 싶을 때마다 StartCalendar.java 실행
 
-#기능
+# 기능
 Calendar : 
   Schedule들을 포함한다. 색을 선택해 주별 일정을 확인할 때 그 Calendar에 포함된 일정은 선택한 색으로 표시된다.
   default calendar : 기본적으로 추가되어 있는 캘린더로 해당되는 주를 클릭하면 모든 캘린더의 일정을 볼 수 있다.
