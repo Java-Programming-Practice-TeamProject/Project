@@ -17,6 +17,7 @@ user를 추가하고 싶을 때마다 StartCalendar.java 실행
   5. import: 선택한 calendar의 모든 schedule을 파일로 저장한다(파일 이름 : calendar name+"Calendar.txt")
   6. export: 선택한 calendar와 이름이 같은 파일에서 schedule을 가져온다.
   
-#### Schedule : 하루종일인 schedule과 시작시간,종료시간이 정해진 schdule로 나뉜다.
+#### Schedule :
+  하루종일인 schedule과 시작시간,종료시간이 정해진 schdule로 나뉜다.
 
   시간, overlap 가능 여부, important, memo, 반복여부를 설정할 수 있다.
