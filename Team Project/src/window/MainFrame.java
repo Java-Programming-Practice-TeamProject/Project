@@ -10,9 +10,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -69,7 +78,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(ButtonPanel, BorderLayout.NORTH);
 		ButtonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 		GridBagLayout gbl_ButtonPanel = new GridBagLayout();
-		gbl_ButtonPanel.columnWidths = new int[] { 50, 150, 200, 150, 100, 100 };
+		gbl_ButtonPanel.columnWidths = new int[] { 50, 150, 200, 150, 50, 50, 50, 50 };
 		gbl_ButtonPanel.rowHeights = new int[] { 50, 20, 50 };
 		gbl_ButtonPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_ButtonPanel.rowWeights = new double[] { 0.0, 0.0 };
@@ -136,11 +145,29 @@ public class MainFrame extends JFrame {
 		ButtonPanel.add(ShareButton, gbc_ShareButton);
 		ShareButton.addActionListener(new ShareButtonClickListener());
 
+		JButton ExportButton = new JButton("Export");
+		GridBagConstraints gbc_ExportButton = new GridBagConstraints();
+		gbc_ExportButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_ExportButton.insets = new Insets(0, 0, 0, 5);
+		gbc_ExportButton.gridx = 5;
+		gbc_ExportButton.gridy = 2;
+		ButtonPanel.add(ExportButton, gbc_ExportButton);
+		ExportButton.addActionListener(new ExportButtonClickListener());
+
+		JButton ImportButton = new JButton("Import");
+		GridBagConstraints gbc_ImportButton = new GridBagConstraints();
+		gbc_ImportButton.insets = new Insets(0, 0, 0, 5);
+		gbc_ImportButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_ImportButton.gridx = 6;
+		gbc_ImportButton.gridy = 2;
+		ImportButton.addActionListener(new ImportButtonClickListener());
+		ButtonPanel.add(ImportButton, gbc_ImportButton);
+
 		JButton AddButton = new JButton("Add");
 		GridBagConstraints gbc_AddButton = new GridBagConstraints();
 		gbc_AddButton.insets = new Insets(0, 0, 0, 5);
 		gbc_AddButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_AddButton.gridx = 5;
+		gbc_AddButton.gridx = 7;
 		gbc_AddButton.gridy = 2;
 		AddButton.addActionListener(new AddButtonClickListener());
 		ButtonPanel.add(AddButton, gbc_AddButton);
@@ -390,6 +417,134 @@ public class MainFrame extends JFrame {
 		}
 	}
 
+	class ExportButtonClickListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			OutputStream fos = null;
+			try {
+				fos = new FileOutputStream("Calendar.txt");
+			} catch (FileNotFoundException e1) {
+			}
+			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			BufferedWriter bw = new BufferedWriter(osw);
+
+			Calendar cal = scheduler.get_calendar(calendarComboBox.getSelectedItem().toString());
+			ArrayList<Schedule> schedules = cal.get_Schedules();
+			try {
+				for (Schedule s : schedules) {
+					bw.write(s.getName() + ",");
+					if (s.getIsImportant()) {
+						bw.write("True,");
+					} else {
+						bw.write("False,");
+					}
+					bw.write(s.getMemo() + ",");
+					bw.write(s.getRepeatType() + ",");
+					bw.write(s.getColor().getRGB() + ",");
+					if (s instanceof FullDaySchedule) {
+						LocalDate time = ((FullDaySchedule) s).getTime();
+						int[] start = { time.getYear(), time.getMonthValue(), time.getDayOfMonth() };
+						bw.write("FullDay,");
+						for (int i = 0; i < 3; i++) {
+							bw.write(start[i] + ",");
+						}
+					} else {
+						LocalDateTime start = ((NormalSchedule) s).getStartTime();
+						LocalDateTime end = ((NormalSchedule) s).getEndTime();
+						int[] start_time = { start.getYear(), start.getMonthValue(), start.getDayOfMonth(),
+								start.getHour(), start.getMinute() };
+						int[] end_time = { end.getYear(), end.getMonthValue(), end.getDayOfMonth(), end.getHour(),
+								end.getMinute() };
+						bw.write("Normal" + ",");
+						for (int i = 0; i < 5; i++) {
+							bw.write(start_time[i] + ",");
+							bw.write(end_time[i] + ",");
+						}
+						if (((NormalSchedule) s).getCanBeOverlapped()) {
+							bw.write("True");
+						} else {
+							bw.write("False");
+						}
+					}
+					bw.newLine();
+				}
+				bw.flush();
+			} catch (Exception e2) {
+			}
+			try {
+				bw.close(); osw.close(); fos.close();
+			} catch (Exception e2) {
+			}
+		}
+	}
+
+	class ImportButtonClickListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			InputStream fis = null;
+			try {
+				fis = new FileInputStream("Calendar.txt");
+			} catch (FileNotFoundException e1) {
+			}
+        	InputStreamReader isr = new InputStreamReader(fis);
+        	BufferedReader br = new BufferedReader(isr);
+
+			Calendar cal = scheduler.get_calendar(calendarComboBox.getSelectedItem().toString());
+			try {
+				String s = new String();
+        		while((s = br.readLine()) != null) {
+					String[] input = s.split(",");
+					String name = input[0];
+					boolean isImp;
+					if (input[1] == "True") {
+						isImp = true;
+					} else {
+						isImp = false;
+					}
+					String memo = input[2];
+					int RepeatType = Integer.parseInt(input[3]);
+					Color color = new Color(Integer.parseInt(input[4]));
+					int[] start = null;
+					int[] end = null;
+					boolean canBeOverlapped = false;
+					if (input[5] == "FullDay") {
+						start = new int[3];
+						for (int i = 0; i < 3; i++) {
+							start[i] = Integer.parseInt(input[6 + i]);
+						}
+					} else {
+						start = new int[5];
+						end = new int[5];
+						for (int i = 0; i < 5; i++) {
+							start[i] = Integer.parseInt(input[6 + 2 * i]);
+							end[i] = Integer.parseInt(input[7 + 2 * i]);
+						}
+						if (input[16] == "True") {
+							canBeOverlapped = true;
+						} else {
+							canBeOverlapped = false;
+						}
+					}
+					try {
+						if (input[5] == "FullDay") {
+							cal.add_schedule(name, start, start, isImp, true, memo, RepeatType, true,
+									color);
+						} else {
+							cal.add_schedule(name, start, end, isImp, canBeOverlapped, memo, RepeatType,
+									false, color);
+						}
+					} catch (Exception e1) {
+
+					}
+        		}
+			} catch (Exception e2) {
+			}
+			try {
+				fis.close(); isr.close(); br.close();
+			} catch (Exception e2) {
+			}
+			loadCalendar();
+		}
+	}
+
 	public void loadCalendar() {
 		int year = (int) yearSpinner.getValue(), month = (int) monthSpinner.getValue();
 		String selectedItem = calendarComboBox.getSelectedItem().toString();
@@ -478,7 +633,6 @@ public class MainFrame extends JFrame {
 				dos.writeInt(s.getRepeatType());
 				dos.writeInt(s.getColor().getRGB());
 
-				dos.flush();
 				if (s instanceof FullDaySchedule) {
 					LocalDate time = ((FullDaySchedule) s).getTime();
 					int[] start = { time.getYear(), time.getMonthValue(), time.getDayOfMonth() };

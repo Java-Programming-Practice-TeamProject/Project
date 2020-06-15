@@ -179,6 +179,14 @@ public class Calendar {
 		throw new NoNameMatchException("The schedule with that name does not exist.");
 	}
 
+	/**
+	 * get all schedules
+	 * @return list of schedules  
+	 */
+	public ArrayList<Schedule> get_Schedules() {
+		return schedules;
+	}
+
 
 	/**
 	 * delete schedule

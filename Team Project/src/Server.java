@@ -93,7 +93,6 @@ public class Server {
 				clients.get(client_name).writeInt(RepeatType);
 				clients.get(client_name).writeInt(color);
 				clients.get(client_name).writeBoolean(true);
-				clients.get(client_name).flush();
 				for (int i = 0; i < 3; i++) {
 					clients.get(client_name).writeInt(start[i]);
 				}
@@ -115,7 +114,6 @@ public class Server {
 				clients.get(client_name).writeInt(RepeatType);
 				clients.get(client_name).writeInt(color);
 				clients.get(client_name).writeBoolean(false);
-				clients.get(client_name).flush();
 				for (int i = 0; i < 5; i++) {
 					clients.get(client_name).writeInt(start[i]);
 					clients.get(client_name).writeInt(end[i]);
