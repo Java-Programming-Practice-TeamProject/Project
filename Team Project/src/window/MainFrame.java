@@ -421,7 +421,7 @@ public class MainFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			OutputStream fos = null;
 			try {
-				fos = new FileOutputStream("Calendar.txt");
+				fos = new FileOutputStream(calendarComboBox.getSelectedItem().toString() + "Calendar.txt");
 			} catch (FileNotFoundException e1) {
 			}
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -481,8 +481,9 @@ public class MainFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			InputStream fis = null;
 			try {
-				fis = new FileInputStream("Calendar.txt");
+				fis = new FileInputStream(calendarComboBox.getSelectedItem().toString() + "Calendar.txt");
 			} catch (FileNotFoundException e1) {
+				return;
 			}
         	InputStreamReader isr = new InputStreamReader(fis);
         	BufferedReader br = new BufferedReader(isr);
@@ -532,7 +533,7 @@ public class MainFrame extends JFrame {
 									false, color);
 						}
 					} catch (Exception e1) {
-
+						JOptionPane.showMessageDialog(null, e1.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
 					}
         		}
 			} catch (Exception e2) {

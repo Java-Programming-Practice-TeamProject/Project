@@ -1,9 +1,12 @@
-# Java Programming Team Project : Scheduler
+# Java Programming Term Project 
+# Group 7 : Scheduler
 
 ## 실행법
 1. Server.java 실행
 2. StartCalendar.java 실행
+두 파일 모두 src 폴더 내에 존재합니다
 user를 추가하고 싶을 때마다 StartCalendar.java 실행
+Server 실행 전에는 StartCalendar가 실행되지 않습니다!!
 
 ## 기능
 #### Calendar : 

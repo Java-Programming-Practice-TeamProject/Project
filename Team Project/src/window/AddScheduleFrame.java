@@ -145,8 +145,8 @@ public class AddScheduleFrame extends JFrame {
 		StartTimeSpinner[4] = new JSpinner(new SpinnerNumberModel(0, 0, 45, 15));
 
 		EndTimeSpinner = new JSpinner[5];
-		for (JSpinner s : EndTimeSpinner) {
-			s = new JSpinner();
+		for (int i = 0; i < 5; i++) {
+			EndTimeSpinner[i] = new JSpinner();
 		}
 		EndTimeSpinner[0] = new JSpinner(new SpinnerNumberModel(today.getYear(), null, null, 1));
 		EndTimeSpinner[0].setEditor(new JSpinner.NumberEditor(EndTimeSpinner[0], "####"));
